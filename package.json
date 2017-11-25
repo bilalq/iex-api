@@ -1,0 +1,34 @@
+{
+  "name": "iex-api",
+  "version": "1.0.0",
+  "description": "Unofficial SDK for using the IEX API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc --no-emit --pretty"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bilalq/iex-api.git"
+  },
+  "keywords": [
+    "iex",
+    "trading",
+    "stock",
+    "market",
+    "api",
+    "sdk"
+  ],
+  "author": "Bilal Quadri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bilalq/iex-api/issues"
+  },
+  "homepage": "https://github.com/bilalq/iex-api#readme",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "0.0.34",
+    "typescript": "^2.6.1"
+  }
+}
