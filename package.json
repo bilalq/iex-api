@@ -12,7 +12,7 @@
     "removetests": "find build -name __tests__ -type d -exec rm -r {} +",
     "copystatic": "cp package.json LICENSE README.md build/",
     "predist": "npm run gitcheck && npm run test && npm run removetests && npm run copystatic",
-    "dist": "cd build && npm run publish",
+    "dist": "cd build && npm publish",
     "prepublish": "[[ \"$PWD\" =~ build ]]"
   },
   "repository": {
