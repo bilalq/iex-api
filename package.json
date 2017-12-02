@@ -13,7 +13,7 @@
     "copystatic": "cp package.json LICENSE README.md build/",
     "predist": "npm run gitcheck && npm run test && npm run removetests && npm run copystatic",
     "dist": "cd build && npm publish",
-    "prepublish": "[[ \"$PWD\" =~ build ]]"
+    "prepublishOnly": "[[ \"$PWD\" =~ build ]]"
   },
   "repository": {
     "type": "git",
