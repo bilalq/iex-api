@@ -1,7 +1,7 @@
-import attribution from './attribution';
-import request from './request';
+import Attribution from './attribution';
+import Client from './client';
 
-export default {
-  attribution,
-  request
+export {
+  Attribution,
+  Client
 };
