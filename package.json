@@ -6,12 +6,10 @@
   "scripts": {
     "prebuild": "rm -rf build",
     "build": "tsc",
-    "pretest": "npm run build",
-    "test": "./node_modules/.bin/mocha --require source-map-support/register 'build/**/__tests__/*.js'",
+    "test": "jest",
     "gitcheck": "git diff-index --quiet HEAD --",
-    "removetests": "find build -name __tests__ -type d -exec rm -r {} +",
     "copystatic": "cp package.json LICENSE README.md build/",
-    "predist": "npm run gitcheck && npm run test && npm run removetests && npm run copystatic",
+    "predist": "npm run gitcheck && npm run test && npm run copystatic",
     "dist": "cd build && npm publish",
     "prepublishOnly": "[[ \"$PWD\" =~ build ]]"
   },
@@ -35,11 +33,25 @@
   "homepage": "https://github.com/bilalq/iex-api#readme",
   "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.0.5",
-    "@types/mocha": "^2.2.44",
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1",
-    "source-map-support": "^0.5.0",
-    "typescript": "^2.6.1"
+    "@types/jest": "^21.1.8",
+    "jest": "^21.2.1",
+    "ts-jest": "^21.2.4",
+    "typescript": "^2.6.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testPathIgnorePatterns": [
+      "/node_modules|build/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
   }
 }
