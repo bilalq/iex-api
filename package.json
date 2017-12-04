@@ -8,7 +8,7 @@
     "build": "tsc",
     "test": "jest",
     "gitcheck": "git diff-index --quiet HEAD --",
-    "copystatic": "cp package.json LICENSE README.md build/",
+    "copystatic": "cp package.json .npmignore LICENSE README.md build/",
     "predist": "npm run gitcheck && npm run test && npm run copystatic",
     "dist": "cd build && npm publish",
     "prepublishOnly": "[[ \"$PWD\" =~ build ]]"
@@ -39,6 +39,12 @@
     "typescript": "^2.6.2"
   },
   "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageDirectory": "build/coverage",
+    "mapCoverage": true,
     "moduleFileExtensions": [
       "ts",
       "tsx",
