@@ -8,8 +8,17 @@ export default class IEXClient {
     this.request = this.request.bind(this);
   }
 
-  request(path: string) {
+  request(path: string): Promise<any> {
     return this.fetchFunction(`${this.httpsEndpoint}/${path}`)
-      .then(_ => _.json());
+    .then(res => {
+      const contentType = res.headers.get('content-type');
+      if (contentType === null) {
+        return null;
+      } else if (contentType.includes('application/json')) {
+        return res.json();
+      } else {
+        return res.text();
+      }
+    });
   }
 }
