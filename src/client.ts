@@ -3,8 +3,8 @@
  * way. It is usable in Browser, React Native, and NodeJS contexts.
  */
 export default class IEXClient {
-  private fetchFunction: typeof fetch;
-  private httpsEndpoint: string;
+  private fetchFunction: typeof fetch
+  private httpsEndpoint: string
 
   /**
    * @param fetchFunction A function that is API compatible with the browser
@@ -15,10 +15,10 @@ export default class IEXClient {
    *  Unless you have a specific mock endpoint or the like in mind, it is
    *  recommended to omit this argument.
    */
-  constructor(fetchFunction: typeof fetch, httpsEndpoint = 'https://api.iextrading.com/1.0') {
-    this.fetchFunction = fetchFunction;
-    this.httpsEndpoint = httpsEndpoint;
-    this.request = this.request.bind(this);
+  public constructor(fetchFunction: typeof fetch, httpsEndpoint = 'https://api.iextrading.com/1.0') {
+    this.fetchFunction = fetchFunction
+    this.httpsEndpoint = httpsEndpoint
+    this.request = this.request.bind(this) // tslint:disable-line:no-unsafe-any
   }
 
   /**
@@ -32,17 +32,17 @@ export default class IEXClient {
    *
    * @param path The path to hit the IEX API endpoint at.
    */
-  request(path: string): Promise<any> {
+  public request(path: string): Promise<any> {
     return this.fetchFunction(`${this.httpsEndpoint}/${path}`)
     .then(res => {
-      const contentType = res.headers.get('content-type');
+      const contentType = res.headers.get('content-type')
       if (contentType === null) {
-        return null;
+        return null
       } else if (contentType.includes('application/json')) {
-        return res.json();
+        return res.json()
       } else {
-        return res.text();
+        return res.text()
       }
-    });
+    })
   }
 }

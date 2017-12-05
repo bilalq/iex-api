@@ -1,7 +1,7 @@
-import Attribution from './attribution';
-import Client from './client';
+import Attribution from './attribution'
+import IEXClient from './client'
 
 export {
   Attribution,
-  Client
-};
+  IEXClient
+}

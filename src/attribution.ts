@@ -6,5 +6,5 @@ export default {
   citation: 'Data provided for free by IEX.',
   link: 'https://iextrading.com/developer',
   termsOfServiceLink: 'https://iextrading.com/api-exhibit-a',
-  TOPSPriceDataCitation: 'IEX Real-Time Price'
+  topsPriceDataCitation: 'IEX Real-Time Price'
 }

@@ -1,16 +1,16 @@
-import { Attribution as indexAttribution, Client as indexClient } from '../index';
-import attribution from '../attribution';
-import client from '../client';
+import attribution from '../attribution'
+import IEXClient from '../client'
+import { Attribution as indexAttribution, IEXClient as indexClient } from '../index'
 
 describe('index', () => {
   it('exposes the IEX Attribution information', () => {
-    expect(indexAttribution.citation).toEqual(attribution.citation);
-    expect(indexAttribution.link).toEqual(attribution.link);
-    expect(indexAttribution.termsOfServiceLink).toEqual(attribution.termsOfServiceLink);
-    expect(indexAttribution.TOPSPriceDataCitation).toEqual(attribution.TOPSPriceDataCitation);
-  });
+    expect(indexAttribution.citation).toEqual(attribution.citation)
+    expect(indexAttribution.link).toEqual(attribution.link)
+    expect(indexAttribution.termsOfServiceLink).toEqual(attribution.termsOfServiceLink)
+    expect(indexAttribution.topsPriceDataCitation).toEqual(attribution.topsPriceDataCitation)
+  })
 
   it('exposes the IEX Client constructor', () => {
-    expect(indexClient).toBe(client);
-  });
-});
+    expect(indexClient).toBe(IEXClient)
+  })
+})
