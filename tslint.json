@@ -1,0 +1,30 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:all"
+    ],
+    "jsRules": {},
+    "rules": {
+      "arrow-parens": [true, "ban-single-arg-parens"],
+      "completed-docs": [true, {
+        "classes": { "properties": { "privacies": ["public", "protected"]}},
+        "enums": true,
+        "functions": true,
+        "tags": true,
+        "methods": true
+      }],
+      "newline-before-return": false,
+      "no-any": false,
+      "no-default-export": false,
+      "no-inferrable-types": true,
+      "no-null-keyword": false,
+      "promise-function-async": false,
+      "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+      "semicolon": [true, "never"],
+      "trailing-comma": [true, {"multiline": "never", "singleline": "never", "esSpecCompliant": true }],
+      "triple-equals": [true, "allow-null-check"],
+      "type-literal-delimiter": false,
+      "typedef": false
+    },
+    "rulesDirectory": []
+}
