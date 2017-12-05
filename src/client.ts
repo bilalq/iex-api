@@ -1,13 +1,37 @@
+/**
+ * This class handles communication with the IEX API in a type-safe and flexible
+ * way. It is usable in Browser, React Native, and NodeJS contexts.
+ */
 export default class IEXClient {
   private fetchFunction: typeof fetch;
   private httpsEndpoint: string;
 
+  /**
+   * @param fetchFunction A function that is API compatible with the browser
+   *  fetch function. In browsers and React Native contexts, the global fetch
+   *  object can be passed in. In NodeJS, a library like fetch-ponyfill can be
+   *  used to provide such a function.
+   * @param httpsEndpoint An optional argument to override the IEX API endpoint.
+   *  Unless you have a specific mock endpoint or the like in mind, it is
+   *  recommended to omit this argument.
+   */
   constructor(fetchFunction: typeof fetch, httpsEndpoint = 'https://api.iextrading.com/1.0') {
     this.fetchFunction = fetchFunction;
     this.httpsEndpoint = httpsEndpoint;
     this.request = this.request.bind(this);
   }
 
+  /**
+   * This function does a straight pass-through request to the IEX api using the
+   * path provided. It can be used to do any call to the service, including ones
+   * that respond with content-type text/csv or application/json.
+   *
+   * @example
+   *   request('/stock/aapl/price')
+   *   request('/stock/aapl/quote?displayPercent=true')
+   *
+   * @param path The path to hit the IEX API endpoint at.
+   */
   request(path: string): Promise<any> {
     return this.fetchFunction(`${this.httpsEndpoint}/${path}`)
     .then(res => {
