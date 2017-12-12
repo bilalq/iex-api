@@ -36,6 +36,8 @@
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^21.1.8",
+    "@types/npm": "^2.0.29",
+    "fetch-ponyfill": "^4.1.0",
     "jest": "^21.2.1",
     "ts-jest": "^21.2.4",
     "tslint": "^5.8.0",
@@ -44,7 +46,8 @@
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "src/**/*.ts"
+      "src/**/*.ts",
+      "!src/apis/**/*.ts"
     ],
     "coverageDirectory": "build/coverage",
     "mapCoverage": true,
