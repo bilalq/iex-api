@@ -30,6 +30,8 @@ export default class IEXClient {
    *   request('/stock/aapl/price')
    *   request('/stock/aapl/quote?displayPercent=true')
    *
+   * @see https://iextrading.com/developer/docs/#getting-started
+   *
    * @param path The path to hit the IEX API endpoint at.
    */
   public request(path: string): Promise<any> {
