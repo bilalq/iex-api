@@ -1,3 +1,5 @@
+import * as ReferenceDataAPI from './apis/referenceData'
+
 /**
  * This class handles communication with the IEX API in a type-safe and flexible
  * way. It is usable in Browser, React Native, and NodeJS contexts.
@@ -46,5 +48,26 @@ export default class IEXClient {
         return res.text()
       }
     })
+  }
+
+  /**
+   * Gets the full list of stock symbols supported by IEX.
+   *
+   * @see https://iextrading.com/developer/docs/#symbols
+   */
+  public symbols(): Promise<ReferenceDataAPI.StockSymbol[]> {
+    return this.request('/ref-data/symbols')
+  }
+
+  /**
+   * Fetches the price of a given stock.
+   * @see https://iextrading.com/developer/docs/#price
+   *
+   * @param stockSymbol The symbol of the stock to fetch prices for.
+   * @return A single number, being the IEX real time price, the 15 minute delayed
+   * market price, or the previous close price, is returned.
+   */
+  public stockPrice(stockSymbol: string): Promise<number> {
+    return this.request(`/stock/${stockSymbol}/price`)
   }
 }
