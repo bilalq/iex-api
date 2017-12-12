@@ -13,6 +13,8 @@
         "tags": true,
         "methods": true
       }],
+      "interface-name": false,
+      "member-ordering": false,
       "newline-before-return": false,
       "no-any": false,
       "no-default-export": false,
