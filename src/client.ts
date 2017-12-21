@@ -98,6 +98,16 @@ export default class IEXClient {
   }
 
   /**
+   * Gets the price and time for the open and close of a stock.
+   *
+   * @see https://iextrading.com/developer/docs/#open-close
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockOpenClose(stockSymbol: string): Promise<StocksAPI.OpenCloseResponse> {
+    return this.request(`/stock/${stockSymbol}/open-close`)
+  }
+
+  /**
    * Fetches the price of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#price

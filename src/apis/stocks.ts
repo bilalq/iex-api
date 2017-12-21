@@ -72,3 +72,14 @@ export interface MultiDayChartItem extends ChartItem {
 }
 
 export type ChartResponse = OneDayChartItem[] | MultiDayChartItem[]
+
+export interface OpenCloseResponse {
+  open: {
+    price: number
+    time: number
+  }
+  close: {
+    price: number
+    time: number
+  }
+}
