@@ -2,22 +2,6 @@ import * as ReferenceDataAPI from './apis/referenceData'
 import * as StocksAPI from './apis/stocks'
 
 /**
- * Helper method that composes a query string out of abitrary JS objects.
- *
- * @param params The input object to compose a querystring out of.
- * @return A querystring that corresponds to the inputted params object. If
- *  the input is null/undefined or empty, this returns an empty string.
- */
-const paramsToQueryString = (params?: {[key: string]: any}): string => {
-  if (!params || Object.keys(params).length === 0) {
-    return ''
-  }
-  return `?${Object.keys(params)
-  .map(key => `${key}=${encodeURIComponent(params[key])}`) // tslint:disable-line:no-unsafe-any
-  .join('&')}`
-}
-
-/**
  * This class handles communication with the IEX API in a type-safe and flexible
  * way. It is usable in Browser, React Native, and NodeJS contexts.
  */
@@ -81,9 +65,11 @@ export default class IEXClient {
    *
    * @see https://iextrading.com/developer/docs/#quote
    * @param stockSymbol The symbol of the stock to fetch data for.
+   * @param [displayPercent=false] If set to true, all percentage values will be multiplied by a factor of 100.
    */
-  public stockQuote(stockSymbol: string, params?: StocksAPI.QuoteRequest): Promise<StocksAPI.QuoteResponse> {
-    return this.request(`/stock/${stockSymbol}/quote${paramsToQueryString(params)}`)
+  public stockQuote(stockSymbol: string, displayPercent?: boolean): Promise<StocksAPI.QuoteResponse> {
+    const queryString = displayPercent ? '?displayPercent=true' : ''
+    return this.request(`/stock/${stockSymbol}/quote${queryString}`)
   }
 
   /**

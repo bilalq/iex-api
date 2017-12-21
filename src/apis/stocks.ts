@@ -1,9 +1,5 @@
 /* tslint:disable:no-magic-numbers */
 
-export interface QuoteRequest {
-  displayPercent: boolean
-}
-
 export interface QuoteResponse {
   symbol: string
   companyName: string
