@@ -38,7 +38,7 @@ import { IEXClient } from 'iex-api'
 
 const iex = new IEXClient(fetch)
 iex.stockCompany('AAPL')
-  .then(quote => console.log(quote))
+  .then(company => console.log(company))
 
   // {
   //   symbol: "AAPL",
@@ -73,7 +73,7 @@ import * as _fetch from 'isomorphic-fetch'
 
 const iex = new IEXClient(_fetch)
 iex.stockCompany('AAPL')
-  .then(quote => console.log(quote))
+  .then(company => console.log(company))
 
   // {
   //   symbol: "AAPL",
