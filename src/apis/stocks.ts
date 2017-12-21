@@ -110,6 +110,58 @@ export interface CompanyResponse {
   sector: string
 }
 
+export interface KeyStatsResponse {
+  companyName: string
+  marketCap: number
+  beta: number
+  week52high: number
+  week52low: number
+  week52change: number
+  shortInterest: number
+  shortDate: string
+  dividendRate: number
+  dividendYield: number
+  exDividendDate: string
+  latestEPS: number
+  latestEPSDate: string
+  sharesOutstanding: number
+  float: number
+  returnOnEquity: number
+  consensusEPS: number
+  numberOfEstimates: number
+  symbol: string
+  EBITDA: number
+  revenue: number
+  grossProfit: number
+  cash: number
+  debt: number
+  ttmEPS: number
+  revenuePerShare: number
+  revenuePerEmployee: number
+  peRatioHigh: number
+  peRatioLow: number
+  EPSSurpriseDollar: number
+  EPSSurprisePercent: number
+  returnOnAssets: number
+  returnOnCapital: number
+  profitMargin: number
+  priceToSales: number
+  priceToBook: number
+  day200MovingAvg: number
+  day50MovingAvg: number
+  institutionPercent: number
+  insiderPercent: number
+  shortRatio: number
+  year5ChangePercent: number
+  year2ChangePercent: number
+  year1ChangePercent: number
+  ytdChangePercent: number
+  month6ChangePercent: number
+  month3ChangePercent: number
+  month1ChangePercent: number
+  day5ChangePercent: number
+}
+
 export interface Previous {
   symbol: string
   date: string

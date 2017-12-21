@@ -129,6 +129,16 @@ export default class IEXClient {
   }
 
   /**
+   * Gets key stats for the given stock symbol.
+   *
+   * @see https://iextrading.com/developer/docs/#key-stats
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockKeyStats(stockSymbol: string): Promise<StocksAPI.KeyStatsResponse> {
+    return this.request(`/stock/${stockSymbol}/stats`)
+  }
+
+  /**
    * Fetches the price of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#price
