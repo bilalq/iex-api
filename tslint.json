@@ -14,6 +14,7 @@
         "methods": true
       }],
       "interface-name": false,
+      "max-line-length": [true, 150],
       "member-ordering": false,
       "newline-before-return": false,
       "no-any": false,
@@ -23,6 +24,7 @@
       "promise-function-async": false,
       "quotemark": [true, "single", "avoid-escape", "avoid-template"],
       "semicolon": [true, "never"],
+      "strict-boolean-expressions": [true, "allow-undefined-union", "allow-boolean-or-undefined"],
       "trailing-comma": [true, {"multiline": "never", "singleline": "never", "esSpecCompliant": true }],
       "triple-equals": [true, "allow-null-check"],
       "type-literal-delimiter": false,
