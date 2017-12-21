@@ -139,6 +139,16 @@ export default class IEXClient {
   }
 
   /**
+   * Gets a list of peer tickerss for the given symbols.
+   *
+   * @see https://iextrading.com/developer/docs/#peers
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockPeers(stockSymbol: string): Promise<string[]> {
+    return this.request(`/stock/${stockSymbol}/peers`)
+  }
+
+  /**
    * Fetches the price of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#price

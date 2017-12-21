@@ -110,6 +110,69 @@ export interface CompanyResponse {
   sector: string
 }
 
+export interface RelevantResponse {
+  peers: boolean
+  symbols: string[]
+}
+
+export interface Financial {
+  reportDate: string | null
+  grossProfit: number | null
+  costOfRevenue: number | null
+  operatingRevenue: number | null
+  totalRevenue: number | null
+  operatingIncome: number | null
+  netIncome: number | null
+  researchAndDevelopment: number | null
+  operatingExpense: number | null
+  currentAssets: number | null
+  totalAssets: number | null
+  totalLiabilities: number | null
+  currentCash: number | null
+  currentDebt: number | null
+  totalCash: number | null
+  totalDebt: number | null
+  shareholderEquity: number | null
+  cashChange: number | null
+  cashFlow: number | null
+  operatingGainsLosses: number | null
+}
+
+export interface FinancialsResponse {
+  symbol: string
+  financials: Financial[]
+}
+
+export interface News {
+  datetime: string
+  headline: string
+  source: string
+  url: string
+  summary: string
+  related: string
+}
+
+export type NewsRange = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+  13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 |
+  28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 |
+  43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
+
+export type SplitRange = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m'
+
+export interface Split {
+exDate: string
+declaredDate: string
+recordDate: string
+paymentDate: string
+ratio: number
+toFactor: number // TODO: API docs say string, but this looks to actually be a number
+forFactor: number // TODO: API docs say string, but this looks to actually be a number
+}
+
+export interface LogoResponse {
+  url: string
+}
+
 export interface KeyStatsResponse {
   companyName: string
   marketCap: number
