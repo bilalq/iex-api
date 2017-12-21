@@ -119,6 +119,16 @@ export default class IEXClient {
   }
 
   /**
+   * Gets information about the company associated with the stock symbol.
+   *
+   * @see https://iextrading.com/developer/docs/#company
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockCompany(stockSymbol: string): Promise<StocksAPI.CompanyResponse> {
+    return this.request(`/stock/${stockSymbol}/company`)
+  }
+
+  /**
    * Fetches the price of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#price
