@@ -1,4 +1,21 @@
 import * as ReferenceDataAPI from './apis/referenceData'
+import * as StocksAPI from './apis/stocks'
+
+/**
+ * Helper method that composes a query string out of abitrary JS objects.
+ *
+ * @param params The input object to compose a querystring out of.
+ * @return A querystring that corresponds to the inputted params object. If
+ *  the input is null/undefined or empty, this returns an empty string.
+ */
+const paramsToQueryString = (params?: {[key: string]: any}): string => {
+  if (!params || Object.keys(params).length === 0) {
+    return ''
+  }
+  return `?${Object.keys(params)
+  .map(key => `${key}=${encodeURIComponent(params[key])}`) // tslint:disable-line:no-unsafe-any
+  .join('&')}`
+}
 
 /**
  * This class handles communication with the IEX API in a type-safe and flexible
@@ -57,6 +74,16 @@ export default class IEXClient {
    */
   public symbols(): Promise<ReferenceDataAPI.StockSymbol[]> {
     return this.request('/ref-data/symbols')
+  }
+
+  /**
+   * Gets the quote information of a given stock.
+   *
+   * @see https://iextrading.com/developer/docs/#quote
+   * @param stockSymbol The symbol of the stock to fetch prices for.
+   */
+  public stockQuote(stockSymbol: string, params?: StocksAPI.QuoteRequest): Promise<StocksAPI.QuoteResponse> {
+    return this.request(`/stock/${stockSymbol}/quote${paramsToQueryString(params)}`)
   }
 
   /**
