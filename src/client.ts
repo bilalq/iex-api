@@ -87,6 +87,17 @@ export default class IEXClient {
   }
 
   /**
+   * Gets charting data for a stock in a given range.
+   *
+   * @see https://iextrading.com/developer/docs/#chart
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   * @param range The time range to load chart data for.
+   */
+  public stockChart(stockSymbol: string, range: StocksAPI.ChartRangeOption): Promise<StocksAPI.ChartResponse> {
+    return this.request(`/stock/${stockSymbol}/chart/${range}`)
+  }
+
+  /**
    * Fetches the price of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#price

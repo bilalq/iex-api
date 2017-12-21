@@ -38,3 +38,37 @@ export interface QuoteResponse {
   week52Low: number
   ytdChange: number
 }
+
+/**
+ * Unfortunately, pattern based type definitions aren't supported in TypeScript.
+ * There's no way to express 'date/<YYYYMMDD>' as a type outside of a generic
+ * catch-all string.
+ */
+export type ChartRangeOption = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m' | '1d' | 'dynamic' | string
+
+export interface ChartItem {
+  high: number
+  low: number
+  volume: number
+  label: number
+  changeOverTime: number
+}
+
+export interface OneDayChartItem extends ChartItem {
+  minute: string
+  average: number
+  notional: number
+  numberOfTrades: number
+}
+
+export interface MultiDayChartItem extends ChartItem {
+  date: string
+  open: number
+  close: number
+  unadjustedVolume: number
+  change: number
+  changePercent: number
+  vwap: number
+}
+
+export type ChartResponse = OneDayChartItem[] | MultiDayChartItem[]
