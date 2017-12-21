@@ -108,6 +108,17 @@ export default class IEXClient {
   }
 
   /**
+   * Gets previous day adjusted price data for a single stock, or an object
+   * keyed by symbol of price data for the whole market.
+   *
+   * @see https://iextrading.com/developer/docs/#previous
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockPrevious(stockSymbol: string): Promise<StocksAPI.PreviousResponse> {
+    return this.request(`/stock/${stockSymbol}/previous`)
+  }
+
+  /**
    * Fetches the price of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#price

@@ -83,3 +83,23 @@ export interface OpenCloseResponse {
     time: number
   }
 }
+
+export interface Previous {
+  symbol: string
+  date: string
+  open: number
+  high: number
+  low: number
+  close: number
+  volume: number
+  unadjustedVolume: number
+  change: number
+  changePercent: number
+  vwap: number
+}
+
+export interface PreviousMarket {
+  [symbol: string]: Previous
+}
+
+export type PreviousResponse = Previous | PreviousMarket
