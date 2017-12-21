@@ -1,3 +1,5 @@
+/* tslint:disable:no-magic-numbers */
+
 export interface QuoteRequest {
   displayPercent: boolean
 }
@@ -244,3 +246,66 @@ export interface PreviousMarket {
 }
 
 export type PreviousResponse = Previous | PreviousMarket
+
+export interface Earning {
+  actualEPS: number
+  consensusEPS: number
+  estimatedEPS: number
+  announceTime: string // TODO: API docs don't mention this, but this can probably be an enum
+  numberOfEstimates: number
+  EPSSurpriseDollar: number
+  EPSReportDate: string
+  fiscalPeriod: string
+  fiscalEndDate: string
+}
+
+export interface EarningsResponse {
+  symbol: string
+  earnings: Earning[]
+}
+
+export type DividendRange = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m'
+
+export interface Dividend {
+  exDate: string
+  paymentDate: string
+  recordDate: string
+  declaredDate: string
+  amount: number
+  flag: string // TODO: API docs don't mention this, but this can probably be an enum
+  type: 'Dividend income' | 'Interest income' | 'Stock dividend' |
+        'Short term capital gain' | 'Medium term capital gain' |
+        'Long term capital gain' | 'Unspecified term capital gain'
+  qualified: 'P' | 'Q' | 'N' | '' | null // TODO: API Docs say null here, but we need to confirm if that ever happens
+  indicated: string // TODO: API docs don't mention this, but this can probably be an enum
+}
+
+export interface DelayedQuoteResponse {
+  symbol: string
+  delayedPrice: number
+  high: number
+  low: number
+  delayedSize: number
+  delayedPriceTime: number
+  processedTime: number
+}
+
+export type MarketList = 'mostactive' | 'gainers' | 'losers' | 'iexvolume' | 'iexpercent'
+
+export interface EffectiveSpread {
+  volume: number // TODO: API docs say this is a string, but it looks like it's a number
+  venue: string
+  venueName: string
+  effectiveSpread: number
+  effectiveQuoted: number
+  priceImprovement: number
+}
+
+export interface VolumeByVenue {
+volume: number
+venue: string
+venueName: string
+date: string | null
+marketPercent: number
+avgMarketPercent: number
+}

@@ -149,6 +149,87 @@ export default class IEXClient {
   }
 
   /**
+   * Similar to the peers endpoint, except this will return most active market
+   * symbols when peers are not available. If the symbols returned are not
+   * peers, the peers key will be false. This is not intended to represent a
+   * definitive or accurate list of peers, and is subject to change at any time.
+   *
+   * @see https://iextrading.com/developer/docs/#relevant
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockRelevant(stockSymbol: string): Promise<StocksAPI.RelevantResponse> {
+    return this.request(`/stock/${stockSymbol}/relevant`)
+  }
+
+  /**
+   * Gets a list of news articles related to the given stock.
+   *
+   * @see https://iextrading.com/developer/docs/#news
+   *
+   * @param stockSymbol The symbol of the stock to fetch news for.
+   * @param [range=10] The number of news articles to pull. Defaults to 10 if omitted.
+   */
+  public stockNews(stockSymbol: string, range?: StocksAPI.NewsRange): Promise<StocksAPI.News[]> {
+    if (range) {
+      return this.request(`/stock/${stockSymbol}/news/last/${range}`)
+    } else {
+      return this.request(`/stock/${stockSymbol}/news`)
+    }
+  }
+
+  /**
+   * Gets income statement, balance sheet, and cash flow data from the four most recent reported quarters.
+   *
+   * @see https://iextrading.com/developer/docs/#financials
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockFinancials(stockSymbol: string): Promise<StocksAPI.FinancialsResponse> {
+    return this.request(`/stock/${stockSymbol}/financials`)
+  }
+
+  /**
+   * Gets earnings data from the four most recent reported quarters.
+   *
+   * @see https://iextrading.com/developer/docs/#earnings
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockEarnings(stockSymbol: string): Promise<StocksAPI.EarningsResponse> {
+    return this.request(`/stock/${stockSymbol}/earnings`)
+  }
+
+  /**
+   * Gets divdends paid by the company over the given range.
+   *
+   * @see https://iextrading.com/developer/docs/#dividends
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   * @param range The date range to get dividends from.
+   */
+  public stockDividends(stockSymbol: string, range: StocksAPI.DividendRange): Promise<StocksAPI.Dividend[]> {
+    return this.request(`/stock/${stockSymbol}/dividends/${range}`)
+  }
+
+  /**
+   * Gets stock splits of the company over the given range.
+   *
+   * @see https://iextrading.com/developer/docs/#splits
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   * @param range The date range to get splits from.
+   */
+  public stockSplits(stockSymbol: string, range: StocksAPI.SplitRange): Promise<StocksAPI.Split[]> {
+    return this.request(`/stock/${stockSymbol}/splits/${range}`)
+  }
+
+  /**
+   * Gets an object containing a URL to the company's logo.
+   *
+   * @see https://iextrading.com/developer/docs/#logo
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockLogo(stockSymbol: string): Promise<StocksAPI.LogoResponse> {
+    return this.request(`/stock/${stockSymbol}/logo`)
+  }
+
+  /**
    * Fetches the price of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#price
@@ -158,5 +239,53 @@ export default class IEXClient {
    */
   public stockPrice(stockSymbol: string): Promise<number> {
     return this.request(`/stock/${stockSymbol}/price`)
+  }
+
+  /**
+   * Gets the 15 minute delayed market quote.
+   *
+   * @see https://iextrading.com/developer/docs/#delayed-quote
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockDelayedQuote(stockSymbol: string): Promise<number> {
+    return this.request(`/stock/${stockSymbol}/price`)
+  }
+
+  /**
+   * Get a list of quotes for the top 10 symbols in a specified list.
+   *
+   * @see https://iextrading.com/developer/docs/#list
+   * @param list The market list to fetch quotes from.
+   * @param [displayPercent=false] If set to true, all percentage values will be multiplied by a factor of 100.
+   */
+  public stockMarketListTopTen(list: StocksAPI.MarketList, displayPercent?: boolean): Promise<StocksAPI.QuoteResponse[]> {
+    const queryString = displayPercent ? '?displayPercent=true' : ''
+    return this.request(`/stock/market/list/${list}${queryString}`)
+  }
+
+  /**
+   * Gets an array of effective spread, eligible volume, and price improvement
+   * of a stock, by market. Unlike volume-by-venue, this will only return a
+   * venue if effective spread is not ‘N/A’. Values are sorted in descending
+   * order by effectiveSpread. Lower effectiveSpread and higher priceImprovement
+   * values are generally considered optimal.
+   *
+   * @see https://iextrading.com/developer/docs/#effective-spread
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockEffectiveSpread(stockSymbol: string): Promise<StocksAPI.EffectiveSpread[]> {
+    return this.request(`/stock/${stockSymbol}/effective-spread`)
+  }
+
+  /**
+   * Gets 15 minute delayed and 30 day average consolidated volume percentage of
+   * a stock, by market. This call will always return 13 values, and will be
+   * sorted in ascending order by current day trading volume percentage.
+   *
+   * @see https://iextrading.com/developer/docs/#volume-by-venue
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockVolumeByVenue(stockSymbol: string): Promise<StocksAPI.VolumeByVenue[]> {
+    return this.request(`/stock/${stockSymbol}/volume-by-venue`)
   }
 }
