@@ -80,7 +80,7 @@ export default class IEXClient {
    * Gets the quote information of a given stock.
    *
    * @see https://iextrading.com/developer/docs/#quote
-   * @param stockSymbol The symbol of the stock to fetch prices for.
+   * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockQuote(stockSymbol: string, params?: StocksAPI.QuoteRequest): Promise<StocksAPI.QuoteResponse> {
     return this.request(`/stock/${stockSymbol}/quote${paramsToQueryString(params)}`)
@@ -88,11 +88,11 @@ export default class IEXClient {
 
   /**
    * Fetches the price of a given stock.
-   * @see https://iextrading.com/developer/docs/#price
    *
+   * @see https://iextrading.com/developer/docs/#price
    * @param stockSymbol The symbol of the stock to fetch prices for.
-   * @return A single number, being the IEX real time price, the 15 minute delayed
-   * market price, or the previous close price, is returned.
+   * @return A single number, being the IEX real time price, the 15 minute
+   *  delayed market price, or the previous close price, is returned.
    */
   public stockPrice(stockSymbol: string): Promise<number> {
     return this.request(`/stock/${stockSymbol}/price`)
