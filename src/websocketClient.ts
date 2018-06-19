@@ -29,7 +29,7 @@ export type TopsListener = (topsResponse: TopsResponse) => void
 /**
  * Client to subscribe to and receive updates published via websocket from IEX
  */
-export default abstract class WebsocketIEXClient {
+export default class WebsocketIEXClient {
     private readonly socketClient: SocketClient
     private readonly websocketBaseUrl: string
 

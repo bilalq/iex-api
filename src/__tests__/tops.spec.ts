@@ -51,7 +51,6 @@ describe('while connected', () => {
     })
 
     test('subscribe', () => {
-
         const onQuoteUpdate1 = jest.fn()
         const onQuoteUpdate2 = jest.fn()
 
