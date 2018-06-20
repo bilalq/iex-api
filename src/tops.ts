@@ -3,17 +3,13 @@ import { Socket, SocketClient } from './websocketClient'
 
 export type TopsListener = (response: TopsResponse) => void
 
-const toNormalizedSymbol = (symbol: string): string => symbol.toLowerCase()
-
 /**
  * TopsService manages subscriptions to TOPS data
  */
 // tslint:disable:completed-docs
 export class TopsService {
     private readonly socket: Socket
-    private readonly listeners: {
-        [key: string]: TopsListener[]
-    } = {}
+    private listeners: TopsListener[] = []
 
     public constructor(socketClient: SocketClient, websocketBaseUrl: string) {
         this.socket = socketClient.connect(`${websocketBaseUrl}/tops`)
@@ -25,77 +21,56 @@ export class TopsService {
     }
 
     public broadcast(response: TopsResponse): void {
-        const normalizedSymbol = toNormalizedSymbol(response.symbol)
-
-        // tslint:disable-next-line:strict-boolean-expressions
-        if (!this.listeners[normalizedSymbol]) {
+        if (this.listeners.length === 0) {
             return
         }
 
-        this.listeners[normalizedSymbol].forEach(listener => {
+        this.listeners.forEach(listener => {
             listener(response)
         })
     }
 
-    public subscribe(symbol: string, onTopsUpdate: TopsListener) {
-        const normalizedSymbol = toNormalizedSymbol(symbol)
-
-        this.subscribeOnConnected(normalizedSymbol)
-
-        // tslint:disable-next-line:strict-boolean-expressions
-        if (!this.listeners[normalizedSymbol]) {
-            this.listeners[normalizedSymbol] = []
-        }
-        this.listeners[normalizedSymbol].push(onTopsUpdate)
-    }
-
-    private subscribeOnConnected(normalizedSymbol: string): void {
+    public subscribe(symbol: string) {
         if (this.socket.connected) {
-            this.emitSubscribe(normalizedSymbol)
+            this.emitSubscribe(symbol)
         } else {
             this.socket.on('connect', () => {
-                this.emitSubscribe(normalizedSymbol)
+                this.emitSubscribe(symbol)
             })
         }
     }
 
-    public unsubscribe(symbol: string, onTopsUpdate: TopsListener): void {
-        const normalizedSymbol = toNormalizedSymbol(symbol)
-
-        // tslint:disable-next-line:strict-boolean-expressions
-        if (!this.listeners[normalizedSymbol]) {
-            return
-        }
-        this.listeners[normalizedSymbol] = this.listeners[normalizedSymbol].filter(listener => listener !== onTopsUpdate)
-
-        if (this.listeners[normalizedSymbol].length === 0) {
-            this.unsubscribeOnConnected(normalizedSymbol)
-        }
+    public addEventListener(listener: TopsListener): void {
+        this.listeners.push(listener)
     }
 
-    public unsubscribeAllForSymbol(symbol: string): void {
-        const normalizedSymbol = toNormalizedSymbol(symbol)
-
-        this.unsubscribeOnConnected(normalizedSymbol)
-
-        this.listeners[normalizedSymbol] = []
+    public removeEventListener(toRemove: TopsListener): void {
+        this.listeners = this.listeners.filter(listener => listener !== toRemove)
     }
 
-    private unsubscribeOnConnected(normalizedSymbol: string): void {
+    public removeAllListeners(): void {
+        this.listeners = []
+    }
+
+    public unsubscribe(symbol: string): void {
+        this.unsubscribeOnConnected(symbol)
+    }
+
+    private unsubscribeOnConnected(symbol: string): void {
         if (this.socket.connected) {
-            this.emitUnsubscribe(normalizedSymbol)
+            this.emitUnsubscribe(symbol)
         } else {
             this.socket.on('connect', () => {
-                this.emitUnsubscribe(normalizedSymbol)
+                this.emitUnsubscribe(symbol)
             })
         }
     }
 
-    private emitSubscribe(normalizedSymbol: string) {
-        this.socket.emit('subscribe', normalizedSymbol)
+    private emitSubscribe(symbol: string) {
+        this.socket.emit('subscribe', symbol)
     }
 
-    private emitUnsubscribe(normalizedSymbol: string) {
-        this.socket.emit('unsubscribe', normalizedSymbol)
+    private emitUnsubscribe(symbol: string) {
+        this.socket.emit('unsubscribe', symbol)
     }
 }

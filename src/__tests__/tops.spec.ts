@@ -1,11 +1,8 @@
 // tslint:disable:no-unbound-method
 import { TopsService } from '../tops'
-import { Socket, SocketClient } from '../websocketClient'
-
-const url = 'https://ws-api.iextrading.com/1.0/'
+import { Socket, SocketClient, WEBSOCKET_BASE_URL } from '../websocketClient'
 
 const symbol = 'SPY'
-const normalizedSymbol = 'spy'
 
 const quote = {
     askPrice: 3,
@@ -47,31 +44,29 @@ describe('while connected', () => {
         socketClient = {
             connect: (): any => socket
         }
-        topsService = new TopsService(socketClient, url)
+        topsService = new TopsService(socketClient, WEBSOCKET_BASE_URL)
     })
 
     test('subscribe', () => {
+        topsService.subscribe(symbol)
+        expect(socket.emit).toHaveBeenCalledWith('subscribe', symbol)
+    })
+
+    test('add/remove event listener', () => {
         const onQuoteUpdate1 = jest.fn()
         const onQuoteUpdate2 = jest.fn()
 
-        topsService.subscribe(symbol, onQuoteUpdate1)
-        topsService.subscribe(symbol, onQuoteUpdate2)
-        expect(socket.emit).toHaveBeenCalledWith('subscribe', normalizedSymbol)
+        topsService.addEventListener(onQuoteUpdate1)
+        topsService.addEventListener(onQuoteUpdate2)
 
         topsService.broadcast(quote)
         expect(onQuoteUpdate1).toHaveBeenCalledWith(quote)
         expect(onQuoteUpdate2).toHaveBeenCalledWith(quote)
-    })
 
-    test('unsubscribe', () => {
-        const onQuoteUpdate1 = jest.fn()
-        const onQuoteUpdate2 = jest.fn()
+        onQuoteUpdate1.mockClear()
+        onQuoteUpdate2.mockClear()
 
-        topsService.subscribe(symbol, onQuoteUpdate1)
-        topsService.subscribe(symbol, onQuoteUpdate2)
-        topsService.unsubscribe(symbol, onQuoteUpdate1)
-
-        expect(socket.emit).not.toHaveBeenCalledWith('unsubscribe', normalizedSymbol)
+        topsService.removeEventListener(onQuoteUpdate1)
 
         topsService.broadcast(quote)
         expect(onQuoteUpdate1).not.toHaveBeenCalledWith(quote)
@@ -80,26 +75,14 @@ describe('while connected', () => {
         onQuoteUpdate1.mockClear()
         onQuoteUpdate2.mockClear()
 
-        topsService.unsubscribe(symbol, onQuoteUpdate2)
-        expect(socket.emit).toHaveBeenCalledWith('unsubscribe', normalizedSymbol)
-        topsService.broadcast(quote)
+        topsService.removeAllListeners()
         expect(onQuoteUpdate1).not.toHaveBeenCalledWith(quote)
         expect(onQuoteUpdate2).not.toHaveBeenCalledWith(quote)
     })
 
-    test('unsubscribeAllForSymbol', () => {
-        const onQuoteUpdate1 = jest.fn()
-        const onQuoteUpdate2 = jest.fn()
-
-        topsService.subscribe(symbol, onQuoteUpdate1)
-        topsService.subscribe(symbol, onQuoteUpdate2)
-
-        topsService.unsubscribeAllForSymbol(symbol)
-        expect(socket.emit).toHaveBeenCalledWith('unsubscribe', normalizedSymbol)
-
-        topsService.broadcast(quote)
-        expect(onQuoteUpdate1).not.toHaveBeenCalledWith(quote)
-        expect(onQuoteUpdate2).not.toHaveBeenCalledWith(quote)
+    test('unsubscribe', () => {
+        topsService.unsubscribe(symbol)
+        expect(socket.emit).toHaveBeenCalledWith('unsubscribe', symbol)
     })
 })
 
@@ -126,21 +109,20 @@ describe('upon connection established', () => {
         socketClient = {
             connect: () => socket
         }
-        topsService = new TopsService(socketClient, url)
+        topsService = new TopsService(socketClient, WEBSOCKET_BASE_URL)
 
-        const onQuoteUpdate = jest.fn()
         expect(socket.emit).not.toHaveBeenCalled()
-        topsService.subscribe(symbol, onQuoteUpdate)
+        topsService.subscribe(symbol)
 
         onConnectCallback()
-        expect(socket.emit).toHaveBeenCalledWith('subscribe', normalizedSymbol)
+        expect(socket.emit).toHaveBeenCalledWith('subscribe', symbol)
 
         emit.mockClear()
 
         expect(socket.emit).not.toHaveBeenCalled()
-        topsService.unsubscribe(symbol, onQuoteUpdate)
+        topsService.unsubscribe(symbol)
 
         onConnectCallback()
-        expect(socket.emit).lastCalledWith('unsubscribe', normalizedSymbol)
+        expect(socket.emit).lastCalledWith('unsubscribe', symbol)
     })
 })

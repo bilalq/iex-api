@@ -26,6 +26,8 @@ export interface SocketClient {
 
 export type TopsListener = (topsResponse: TopsResponse) => void
 
+export const WEBSOCKET_BASE_URL = 'https://ws-api.iextrading.com/1.0'
+
 /**
  * Client to subscribe to and receive updates published via websocket from IEX
  */
@@ -43,7 +45,7 @@ export default class WebsocketIEXClient {
         return this.lazyTopsService
     }
 
-    public constructor(socketClient: SocketClient, websocketBaseUrl = 'https://ws-api.iextrading.com/1.0') {
+    public constructor(socketClient: SocketClient, websocketBaseUrl = WEBSOCKET_BASE_URL) {
         this.socketClient = socketClient
         this.websocketBaseUrl = websocketBaseUrl
     }
@@ -51,26 +53,39 @@ export default class WebsocketIEXClient {
     /**
      * Subscribe to TOPS updates on symbol
      * @param symbol The stock symbol
-     * @param onTopsUpdate callback with TOPS response
      */
-    public subscribeTops(symbol: string, onTopsUpdate: TopsListener): void {
-        this.topsService.subscribe(symbol, onTopsUpdate)
+    public subscribeTops(symbol: string): void {
+        this.topsService.subscribe(symbol)
     }
 
     /**
-     * Unsubscribe to TOPS updates on symbol for a specified callback
+     * Unsubscribe to TOPS updates on symbol
      * @param symbol The stock symbol
-     * @param onTopsUpdate callback with TOPS response
      */
-    public unsubscribeTops(symbol: string, onTopsUpdate: TopsListener): void {
-        this.topsService.unsubscribe(symbol, onTopsUpdate)
+    public unsubscribeTops(symbol: string): void {
+        this.topsService.unsubscribe(symbol)
     }
 
     /**
-     * Unsubscribe to all TOPS updates for a symbol
-     * @param symbol The stock symbol
+     * Add TOPS event listener
+     * @param listener callback to be invoked
      */
-    public unsubscribeAllTopsForSymbol(symbol: string): void {
-        this.topsService.unsubscribeAllForSymbol(symbol)
+    public addTopsListener(listener: TopsListener): void {
+        this.topsService.addEventListener(listener)
+    }
+
+    /**
+     * Remove specified TOPS event listener
+     * @param listener callback to be removed
+     */
+    public removeTopsListener(listener: TopsListener): void {
+        this.topsService.removeEventListener(listener)
+    }
+
+    /**
+     * Remove all TOPS listeners
+     */
+    public removeAllTopsListeners(): void {
+        this.topsService.removeAllListeners()
     }
 }

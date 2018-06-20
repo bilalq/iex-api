@@ -21,11 +21,13 @@ const prompt = () =>
             console.log(response)
         }
 
-        client.subscribeTops(stock, printQuote)
+        client.addTopsListener(printQuote)
+        client.subscribeTops(stock)
 
-        const wait = 20000
+        const wait = 10000
         setTimeout(() => {
-            client.unsubscribeTops(stock, printQuote)
+            client.unsubscribeTops(stock)
+            client.removeTopsListener(printQuote)
             prompt()
         }, wait)
     })
