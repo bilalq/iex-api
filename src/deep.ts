@@ -1,7 +1,7 @@
-import { DEEP_CHANNELS, DeepResponse, SystemEvent } from './apis/marketData'
+import { DEEP_CHANNELS, DeepSocketResponse, SYSTEM_DEEP_CHANNELS, SystemEvent } from './apis/marketData'
 import { Socket, SocketClient, subscribeOnConnected } from './websocketClient'
 
-export type DeepListener = (response: DeepResponse) => void
+export type DeepListener = (response: DeepSocketResponse) => void
 
 export type SystemEventListener = (systemEvent: SystemEvent) => void
 
@@ -20,14 +20,14 @@ export class DeepService {
             const response = JSON.parse(raw) as object
 
             if (response.hasOwnProperty('messageType')) {
-                this.broadcast(response as DeepResponse)
+                this.broadcast(response as DeepSocketResponse)
             } else if (response.hasOwnProperty('systemEvent')) {
                 this.broadcastSystemEvent(response as SystemEvent)
             }
         })
     }
 
-    public broadcast(response: DeepResponse): void {
+    public broadcast(response: DeepSocketResponse): void {
         this.listeners.forEach(listener => {
             listener(response)
         })
@@ -44,7 +44,7 @@ export class DeepService {
     }
 
     public subscribeSystemEvents(): void {
-        subscribeOnConnected(this.socket, JSON.stringify({ channels: [DEEP_CHANNELS.SYSTEM_EVENT] }))
+        subscribeOnConnected(this.socket, JSON.stringify({ channels: [SYSTEM_DEEP_CHANNELS.SYSTEM_EVENT] }))
     }
 
     public addDeepListener(listener: DeepListener): void {

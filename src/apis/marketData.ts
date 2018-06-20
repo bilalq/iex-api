@@ -25,12 +25,18 @@ export enum DEEP_CHANNELS {
     OPERATIONAL_HALT_STATUS = 'ophaltstatus',
     SHORT_SALE_RESTRICTION = 'ssr',
     SECURITY_EVENT = 'securityevent',
-    SYSTEM_EVENT = 'systemevent',
     TRADING_STATUS = 'tradingstatus',
     TRADE_BREAK = 'tradebreak',
     TRADES = 'trades',
 
     ALL = DEEP
+}
+
+/**
+ * DEEP channels not specific to a symbol
+ */
+export enum SYSTEM_DEEP_CHANNELS {
+    SYSTEM_EVENT = 'systemevent'
 }
 
 export interface SizePrice {
@@ -44,7 +50,7 @@ export interface Book {
     bids: SizePrice[],
 }
 
-export interface Trades {
+export interface Trade {
     isISO: boolean
     isOddLot: boolean
     isOutsideRegularHours: boolean
@@ -187,9 +193,27 @@ export interface OfficialPrice {
     timestamp: number
 }
 
-export interface DeepResponse {
+export interface DeepSocketResponse {
     symbol: string
     messageType: DEEP_CHANNELS
-    data: SizePrice | Trades | TradingStatus | OperationalHaltStatus |
+    data: SizePrice | Trade | TradingStatus | OperationalHaltStatus |
         ShortSaleRestrictionStatus | SecurityEvent | TradeBreak | Auction | OfficialPrice
+}
+
+export interface DeepResponse extends Book {
+    symbol: string
+    marketPercent: number
+    volume: number
+    lastSalePrice: number
+    lastSaleSize: number
+    lastSaleTime: number
+    lastUpdated: number
+    systemEvent: SystemEvent
+    tradingStatus: TradingStatus
+    opHaltStatus: OperationalHaltStatus
+    ssrStatus: ShortSaleRestrictionStatus
+    securityEvent: SecurityEvent
+    trades: Trade[]
+    tradeBreaks: TradeBreak[]
+    auction: Auction
 }

@@ -1,3 +1,4 @@
+import * as MarketDataAPI from './apis/marketData'
 import * as ReferenceDataAPI from './apis/referenceData'
 import * as StocksAPI from './apis/stocks'
 
@@ -274,4 +275,27 @@ export default class IEXClient {
   public stockVolumeByVenue(stockSymbol: string): Promise<StocksAPI.VolumeByVenue[]> {
     return this.request(`/stock/${stockSymbol}/volume-by-venue`)
   }
+
+  /**
+   * Retrieves latest TOPS data for specified symbol
+   */
+  public tops(stockSymbol: string): Promise<MarketDataAPI.TopsResponse[]> {
+      return this.request(`/tops?symbols=${stockSymbol}`)
+  }
+
+  /**
+   * Retrieves latest DEEP data for specified symbol
+   */
+  public deep(stockSymbol: string): Promise<MarketDataAPI.DeepResponse> {
+      return this.request(`/deep?symbols=${stockSymbol}`)
+  }
+
+  /**
+   * Retrieves latest System Event
+   */
+  public deepSystemEvent(): Promise<MarketDataAPI.SystemEvent> {
+      return this.request('/deep/system-event')
+  }
+
+  // TODO: integrate channel specific DEEP endpoints
 }
