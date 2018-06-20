@@ -3,7 +3,7 @@
 // tslint:disable:align
 import inquirer, { Question } from 'inquirer'
 import io from 'socket.io-client'
-import { TopsResponse } from '../src/apis/marketData'
+import { DEEP_CHANNELS, TopsResponse } from '../src/apis/marketData'
 import WebsocketIEXClient from '../src/websocketClient'
 
 const question: Question = {
@@ -12,17 +12,28 @@ const question: Question = {
     name: 'stock'
 }
 
-const prompt = () =>
+const prompt = () => {
+    const client = new WebsocketIEXClient(io)
+    client.addSystemEventListener(systemEvent => {
+        // tslint:disable-next-line:no-console
+        console.log(systemEvent)
+    })
+    client.subscribeSystemEvents()
+
     inquirer.prompt(question).then(answers => {
         const stock = answers.stock.toLowerCase()
-        const client = new WebsocketIEXClient(io)
         const printQuote = (response: TopsResponse) => {
             // tslint:disable-next-line:no-console
             console.log(response)
         }
 
         client.addTopsListener(printQuote)
+        client.addDeepListener(response => {
+            // tslint:disable-next-line:no-console
+            console.log(response)
+        })
         client.subscribeTops(stock)
+        client.subscribeDeep(stock)
 
         const wait = 10000
         setTimeout(() => {
@@ -31,5 +42,6 @@ const prompt = () =>
             prompt()
         }, wait)
     })
+}
 
 prompt()
