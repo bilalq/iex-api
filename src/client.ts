@@ -6,8 +6,8 @@ import * as StocksAPI from './apis/stocks'
  * way. It is usable in Browser, React Native, and NodeJS contexts.
  */
 export default class IEXClient {
-  private fetchFunction: typeof fetch
-  private httpsEndpoint: string
+  private readonly fetchFunction: typeof fetch
+  private readonly httpsEndpoint: string
 
   /**
    * @param fetchFunction A function that is API compatible with the browser
