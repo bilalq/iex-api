@@ -106,6 +106,7 @@ export interface CompanyResponse {
   CEO: string
   issueType: IssueType
   sector: string
+  tags: string[]
 }
 
 export interface RelevantResponse {
