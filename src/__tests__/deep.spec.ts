@@ -35,7 +35,7 @@ describe('while connected', () => {
         socketClient = {
             connect: (): any => socket
         }
-        deepService = new DeepService(socketClient, WEBSOCKET_BASE_URL)
+        deepService = new DeepService(socketClient, {}, WEBSOCKET_BASE_URL)
     })
 
     test('add/remove listeners', () => {

@@ -16,7 +16,32 @@ const question: Question = {
     name: 'stock'
 }
 const { fetch } = fetchPonyfill()
-const wsClient = new WebsocketIEXClient(io)
+const wsClient = new WebsocketIEXClient(io, {
+    error(error: Error) {
+        console.log(error)
+    },
+    connect_error(error: Error) {
+        console.log(error)
+    },
+    connect_timeout(timeout) {
+        console.log(timeout)
+    },
+    disconnect(reason: string) {
+        console.log(reason)
+    },
+    reconnect(attempt: number) {
+        console.log(attempt)
+    },
+    reconnect_attempt(attempt: number) {
+        console.log(attempt)
+    },
+    reconnect_error(error: Error) {
+        console.log(error)
+    },
+    reconnect_failed() {
+        console.log('reconnect failed')
+    }
+})
 const client = new IEXClient(fetch)
 
 wsClient.addSystemEventListener(systemEvent => {

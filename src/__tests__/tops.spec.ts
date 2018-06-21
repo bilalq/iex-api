@@ -44,7 +44,7 @@ describe('while connected', () => {
         socketClient = {
             connect: (): any => socket
         }
-        topsService = new TopsService(socketClient, WEBSOCKET_BASE_URL)
+        topsService = new TopsService(socketClient, {}, WEBSOCKET_BASE_URL)
     })
 
     test('subscribe', () => {
@@ -109,7 +109,7 @@ describe('upon connection established', () => {
         socketClient = {
             connect: () => socket
         }
-        topsService = new TopsService(socketClient, WEBSOCKET_BASE_URL)
+        topsService = new TopsService(socketClient, {}, WEBSOCKET_BASE_URL)
 
         expect(socket.emit).not.toHaveBeenCalled()
         topsService.subscribe(symbol)
