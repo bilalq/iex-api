@@ -88,7 +88,7 @@ describe('while connected', () => {
 
 describe('upon connection established', () => {
     test('subscribe/unsubscribe', () => {
-        let onConnectCallback = () => { fail('should not be invoked') }
+        let onConnectCallback = () => { fail('this should be overridden in the test') }
 
         on = jest
             .fn((event, callback: () => void) => {

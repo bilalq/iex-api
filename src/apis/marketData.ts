@@ -15,7 +15,7 @@ export interface TopsResponse {
 }
 
 /**
- * DEEP channels available to subscribe
+ * DEEP channels available for subscription on a per symbol basis
  */
 export enum DEEP_CHANNELS {
     AUCTION = 'auction',
@@ -33,7 +33,7 @@ export enum DEEP_CHANNELS {
 }
 
 /**
- * DEEP channels not specific to a symbol
+ * System-wide DEEP channels not specific to a symbol
  */
 export enum SYSTEM_DEEP_CHANNELS {
     SYSTEM_EVENT = 'systemevent'
