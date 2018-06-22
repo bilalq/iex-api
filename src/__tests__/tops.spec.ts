@@ -44,7 +44,7 @@ describe('while connected', () => {
         socketClient = {
             connect: (): any => socket
         }
-        topsService = new TopsService(socketClient, WEBSOCKET_BASE_URL)
+        topsService = new TopsService(socketClient, {}, WEBSOCKET_BASE_URL)
     })
 
     test('subscribe', () => {
@@ -88,7 +88,7 @@ describe('while connected', () => {
 
 describe('upon connection established', () => {
     test('subscribe/unsubscribe', () => {
-        let onConnectCallback = () => { fail('should not be invoked') }
+        let onConnectCallback = () => { fail('this should be overridden in the test') }
 
         on = jest
             .fn((event, callback: () => void) => {
@@ -109,7 +109,7 @@ describe('upon connection established', () => {
         socketClient = {
             connect: () => socket
         }
-        topsService = new TopsService(socketClient, WEBSOCKET_BASE_URL)
+        topsService = new TopsService(socketClient, {}, WEBSOCKET_BASE_URL)
 
         expect(socket.emit).not.toHaveBeenCalled()
         topsService.subscribe(symbol)

@@ -1,5 +1,5 @@
 import { TopsResponse } from './apis/marketData'
-import { Socket, SocketClient } from './websocketClient'
+import { initExceptionHandlers, Socket, SocketClient, SocketExceptionHandlers, subscribeOnConnected, unsubscribeOnConnected } from './websocketClient'
 
 export type TopsListener = (response: TopsResponse) => void
 
@@ -11,8 +11,9 @@ export class TopsService {
     private readonly socket: Socket
     private listeners: TopsListener[] = []
 
-    public constructor(socketClient: SocketClient, websocketBaseUrl: string) {
+    public constructor(socketClient: SocketClient, exceptionHandlers: SocketExceptionHandlers, websocketBaseUrl: string) {
         this.socket = socketClient.connect(`${websocketBaseUrl}/tops`)
+        initExceptionHandlers(this.socket, exceptionHandlers)
         this.socket.on('message', (raw: string) => {
             const response = JSON.parse(raw) as TopsResponse
 
@@ -21,23 +22,13 @@ export class TopsService {
     }
 
     public broadcast(response: TopsResponse): void {
-        if (this.listeners.length === 0) {
-            return
-        }
-
         this.listeners.forEach(listener => {
             listener(response)
         })
     }
 
     public subscribe(symbol: string) {
-        if (this.socket.connected) {
-            this.emitSubscribe(symbol)
-        } else {
-            this.socket.on('connect', () => {
-                this.emitSubscribe(symbol)
-            })
-        }
+        subscribeOnConnected(this.socket, symbol)
     }
 
     public addEventListener(listener: TopsListener): void {
@@ -53,24 +44,6 @@ export class TopsService {
     }
 
     public unsubscribe(symbol: string): void {
-        this.unsubscribeOnConnected(symbol)
-    }
-
-    private unsubscribeOnConnected(symbol: string): void {
-        if (this.socket.connected) {
-            this.emitUnsubscribe(symbol)
-        } else {
-            this.socket.on('connect', () => {
-                this.emitUnsubscribe(symbol)
-            })
-        }
-    }
-
-    private emitSubscribe(symbol: string) {
-        this.socket.emit('subscribe', symbol)
-    }
-
-    private emitUnsubscribe(symbol: string) {
-        this.socket.emit('unsubscribe', symbol)
+        unsubscribeOnConnected(this.socket, symbol)
     }
 }

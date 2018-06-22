@@ -1,9 +1,13 @@
 // tslint:disable:no-unsafe-any
 // tslint:disable:no-floating-promises
 // tslint:disable:align
+// tslint:disable:no-console
+import fetchPonyfill from 'fetch-ponyfill'
 import inquirer, { Question } from 'inquirer'
 import io from 'socket.io-client'
-import { TopsResponse } from '../src/apis/marketData'
+import util from 'util'
+import { DeepSocketResponse, TopsResponse } from '../src/apis/marketData'
+import IEXClient from '../src/client'
 import WebsocketIEXClient from '../src/websocketClient'
 
 const question: Question = {
@@ -11,25 +15,74 @@ const question: Question = {
     message: 'What stock do you want information about?',
     name: 'stock'
 }
+const { fetch } = fetchPonyfill()
+const wsClient = new WebsocketIEXClient(io, {
+    error(error: Error) {
+        console.log(error)
+    },
+    connect_error(error: Error) {
+        console.log(error)
+    },
+    connect_timeout(timeout) {
+        console.log(timeout)
+    },
+    disconnect(reason: string) {
+        console.log(reason)
+    },
+    reconnect(attempt: number) {
+        console.log(attempt)
+    },
+    reconnect_attempt(attempt: number) {
+        console.log(attempt)
+    },
+    reconnect_error(error: Error) {
+        console.log(error)
+    },
+    reconnect_failed() {
+        console.log('reconnect failed')
+    }
+})
+const client = new IEXClient(fetch)
 
-const prompt = () =>
+wsClient.addSystemEventListener(systemEvent => {
+    console.log(`System event: ${util.inspect(systemEvent)}`)
+})
+wsClient.subscribeSystemEvents()
+
+client.deepSystemEvent().then(event => {
+    console.log(`System event: ${util.inspect(event)}`)
+})
+
+const prompt = () => {
     inquirer.prompt(question).then(answers => {
         const stock = answers.stock.toLowerCase()
-        const client = new WebsocketIEXClient(io)
-        const printQuote = (response: TopsResponse) => {
-            // tslint:disable-next-line:no-console
-            console.log(response)
+
+        client.tops(stock).then(response => {
+            console.log(`TOPS http response: ${util.inspect(response)}`)
+        })
+        client.deep(stock).then(response => {
+            console.log(`DEEP http response: ${util.inspect(response, false, null)}`)
+        })
+        const printTops = (response: TopsResponse) => {
+            console.log(`TOPS socket response: ${util.inspect(response)}`)
         }
 
-        client.addTopsListener(printQuote)
-        client.subscribeTops(stock)
+        wsClient.addTopsListener(printTops)
+        const printDeepResponse = (response: DeepSocketResponse) => {
+            console.log(`DEEP socket response: ${util.inspect(response, false, null)}`)
+        }
+        wsClient.addDeepListener(printDeepResponse)
+        wsClient.subscribeTops(stock)
+        wsClient.subscribeDeep(stock)
 
         const wait = 10000
         setTimeout(() => {
-            client.unsubscribeTops(stock)
-            client.removeTopsListener(printQuote)
+            wsClient.unsubscribeTops(stock)
+            wsClient.removeTopsListener(printTops)
+            wsClient.removeDeepListener(printDeepResponse)
             prompt()
         }, wait)
     })
+}
 
 prompt()
