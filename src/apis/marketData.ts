@@ -196,7 +196,7 @@ export interface OfficialPrice {
 export interface DeepSocketResponse {
     symbol: string
     messageType: DEEP_CHANNELS
-    data: SizePrice | Trade | TradingStatus | OperationalHaltStatus |
+    data: Book | Trade | TradingStatus | OperationalHaltStatus |
         ShortSaleRestrictionStatus | SecurityEvent | TradeBreak | Auction | OfficialPrice
 }
 

@@ -1,7 +1,11 @@
 import Attribution from './attribution'
 import IEXClient from './client'
+import WebsocketIEXClient from './websocketClient'
 
 export {
   Attribution,
-  IEXClient
+  IEXClient,
+  WebsocketIEXClient
 }
+
+export * from './apis/marketData'
