@@ -9,3 +9,4 @@ export {
 }
 
 export * from './apis/marketData'
+export * from './apis/stocks'
