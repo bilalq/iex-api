@@ -35,6 +35,8 @@ export interface QuoteResponse {
   openTime: number
   close: number
   closeTime: number
+  high: number
+  low: number
   latestPrice: number
   latestSource: 'IEX real time price' | '15 minute delayed price' | 'Close' | 'Previous close'
   latestTime: string
