@@ -2,6 +2,15 @@ import * as MarketDataAPI from './apis/marketData'
 import * as ReferenceDataAPI from './apis/referenceData'
 import * as StocksAPI from './apis/stocks'
 
+const toQueryList = (values: string[]): string => values.map(encodeURIComponent).join(',')
+
+// tslint:disable:no-unsafe-any
+const toParams = (params: any): string =>
+  Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    .join('&')
+// tslint:enable:no-unsafe-any
+
 /**
  * This class handles communication with the IEX API in a type-safe and flexible
  * way. It is usable in Browser, React Native, and NodeJS contexts.
@@ -59,6 +68,33 @@ export default class IEXClient {
    */
   public symbols(): Promise<ReferenceDataAPI.StockSymbol[]> {
     return this.request('/ref-data/symbols')
+  }
+
+  /**
+   * This function retrieves symbols in batch mode
+   *
+   * @example
+   *   request('price', 'AAPL', 'MSFT)
+   *   request('quote', 'F', 'GM')
+   *
+   * @see https://iextrading.com/developer/docs/#batch-requests
+   *
+   * @param types one or more IEX endpoint names, eg quote, divideneds, earnings. Limited to 10 types
+   * @param symbols the array of symbols to retrieve
+   * @param params any optional map of additional params to pass through
+   */
+  public stockBatch(
+    types: StocksAPI.StockEndpoint | StocksAPI.StockEndpoint[],
+    symbols: string[],
+    params?: {}
+  ): Promise<any> {
+    const paramSuffix = params ? toParams(params) : ''
+
+    if (typeof types === 'string') {
+      return this.request(`/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(symbols)}${paramSuffix}`)
+    }
+
+    return this.request(`/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(symbols)}${paramSuffix}`)
   }
 
   /**

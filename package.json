@@ -2,7 +2,8 @@
   "name": "iex-api",
   "version": "0.0.3",
   "description": "Unofficial SDK for using the IEX API.",
-  "main": "index.js",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "prebuild": "rm -rf build",
     "build": "tsc",
