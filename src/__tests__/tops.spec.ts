@@ -1,6 +1,6 @@
 // tslint:disable:no-unbound-method
 import { TopsService } from '../tops'
-import { Socket, SocketClient, WEBSOCKET_BASE_URL } from '../websocketClient'
+import { Socket, SocketClientCreator, WEBSOCKET_BASE_URL } from '../websocketClient'
 
 const symbol = 'SPY'
 
@@ -22,7 +22,7 @@ const quote = {
 
 let on
 let socket: Socket
-let socketClient: SocketClient
+let socketClientCreator: SocketClientCreator
 let topsService: TopsService
 
 describe('while connected', () => {
@@ -41,10 +41,8 @@ describe('while connected', () => {
             emit: jest.fn(),
             on
         }
-        socketClient = {
-            connect: (): any => socket
-        }
-        topsService = new TopsService(socketClient, {}, WEBSOCKET_BASE_URL)
+        socketClientCreator = () => socket
+        topsService = new TopsService(socketClientCreator, {}, WEBSOCKET_BASE_URL)
     })
 
     test('subscribe', () => {
@@ -106,10 +104,8 @@ describe('upon connection established', () => {
             emit,
             on
         }
-        socketClient = {
-            connect: () => socket
-        }
-        topsService = new TopsService(socketClient, {}, WEBSOCKET_BASE_URL)
+        socketClientCreator = () => socket
+        topsService = new TopsService(socketClientCreator, {}, WEBSOCKET_BASE_URL)
 
         expect(socket.emit).not.toHaveBeenCalled()
         topsService.subscribe(symbol)

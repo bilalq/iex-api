@@ -1,5 +1,5 @@
 import { DEEP_CHANNELS, DeepSocketResponse, SYSTEM_DEEP_CHANNELS, SystemEvent } from './apis/marketData'
-import { initExceptionHandlers, Socket, SocketClient, SocketExceptionHandlers, subscribeOnConnected } from './websocketClient'
+import { initExceptionHandlers, Socket, SocketClientCreator, SocketExceptionHandlers, subscribeOnConnected } from './websocketClient'
 
 export type DeepListener = (response: DeepSocketResponse) => void
 
@@ -14,8 +14,8 @@ export class DeepService {
     private listeners: DeepListener[] = []
     private systemEventListeners: SystemEventListener[] = []
 
-    public constructor(socketClient: SocketClient, exceptionHandlers: SocketExceptionHandlers, websocketBaseUrl: string) {
-        this.socket = socketClient.connect(`${websocketBaseUrl}/deep`)
+    public constructor(socketClientCreator: SocketClientCreator, exceptionHandlers: SocketExceptionHandlers, websocketBaseUrl: string) {
+        this.socket = socketClientCreator(`${websocketBaseUrl}/deep`)
         initExceptionHandlers(this.socket, exceptionHandlers)
         this.socket.on('message', (raw: string) => {
             const response = JSON.parse(raw) as object

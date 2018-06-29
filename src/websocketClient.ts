@@ -26,9 +26,7 @@ export const DEFAULT_DEEP_CHANNELS: DEEP_CHANNELS[] = [
 /**
  * Socket factory for Socket objects compatible with socket.io implementations
  */
-export interface SocketClient {
-    connect(uri: string, options?: { }): Socket
-}
+export type SocketClientCreator = (url: string) => Socket
 
 export type TopsListener = (topsResponse: TopsResponse) => void
 
@@ -81,7 +79,7 @@ export const initExceptionHandlers = (socket: Socket, exceptionHandlers: SocketE
  * Client to subscribe to and receive updates published via websocket from IEX
  */
 export default class WebsocketIEXClient {
-    private readonly socketClient: SocketClient
+    private readonly socketClientCreator: SocketClientCreator
     private readonly websocketBaseUrl: string
 
     private lazyTopsService: TopsService | null = null
@@ -90,7 +88,7 @@ export default class WebsocketIEXClient {
 
     private get topsService() {
         if (this.lazyTopsService === null) {
-            this.lazyTopsService = new TopsService(this.socketClient, this.exceptionHandlers, this.websocketBaseUrl)
+            this.lazyTopsService = new TopsService(this.socketClientCreator, this.exceptionHandlers, this.websocketBaseUrl)
         }
 
         return this.lazyTopsService
@@ -98,14 +96,14 @@ export default class WebsocketIEXClient {
 
     private get deepService() {
         if (this.lazyDeepService === null) {
-            this.lazyDeepService = new DeepService(this.socketClient, this.exceptionHandlers, this.websocketBaseUrl)
+            this.lazyDeepService = new DeepService(this.socketClientCreator, this.exceptionHandlers, this.websocketBaseUrl)
         }
 
         return this.lazyDeepService
     }
 
-    public constructor(socketClient: SocketClient, exceptionHandlers: SocketExceptionHandlers = {}, websocketBaseUrl = WEBSOCKET_BASE_URL) {
-        this.socketClient = socketClient
+    public constructor(socketClient: SocketClientCreator, exceptionHandlers: SocketExceptionHandlers = {}, websocketBaseUrl = WEBSOCKET_BASE_URL) {
+        this.socketClientCreator = socketClient
         this.websocketBaseUrl = websocketBaseUrl
         this.exceptionHandlers = exceptionHandlers
     }

@@ -1,5 +1,7 @@
 import { TopsResponse } from './apis/marketData'
-import { initExceptionHandlers, Socket, SocketClient, SocketExceptionHandlers, subscribeOnConnected, unsubscribeOnConnected } from './websocketClient'
+import {
+    initExceptionHandlers, Socket, SocketClientCreator, SocketExceptionHandlers, subscribeOnConnected, unsubscribeOnConnected
+} from './websocketClient'
 
 export type TopsListener = (response: TopsResponse) => void
 
@@ -11,8 +13,8 @@ export class TopsService {
     private readonly socket: Socket
     private listeners: TopsListener[] = []
 
-    public constructor(socketClient: SocketClient, exceptionHandlers: SocketExceptionHandlers, websocketBaseUrl: string) {
-        this.socket = socketClient.connect(`${websocketBaseUrl}/tops`)
+    public constructor(socketClientCreator: SocketClientCreator, exceptionHandlers: SocketExceptionHandlers, websocketBaseUrl: string) {
+        this.socket = socketClientCreator(`${websocketBaseUrl}/tops`)
         initExceptionHandlers(this.socket, exceptionHandlers)
         this.socket.on('message', (raw: string) => {
             const response = JSON.parse(raw) as TopsResponse

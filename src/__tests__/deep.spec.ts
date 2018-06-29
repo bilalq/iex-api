@@ -1,5 +1,5 @@
 import { DeepService } from '../deep'
-import { Socket, SocketClient, WEBSOCKET_BASE_URL } from '../websocketClient'
+import { Socket, SocketClientCreator, WEBSOCKET_BASE_URL } from '../websocketClient'
 
 const rawSystemEvent = '{"systemEvent":"R","timestamp":1529587800001}'
 
@@ -12,7 +12,7 @@ let onMessage: (message: string) => void = () => {
     fail('this should be overridden in a test')
 }
 let socket: Socket
-let socketClient: SocketClient
+let socketClientCreator: SocketClientCreator
 let deepService: DeepService
 
 describe('while connected', () => {
@@ -32,10 +32,8 @@ describe('while connected', () => {
             emit: jest.fn(),
             on
         }
-        socketClient = {
-            connect: (): any => socket
-        }
-        deepService = new DeepService(socketClient, {}, WEBSOCKET_BASE_URL)
+        socketClientCreator = () => socket
+        deepService = new DeepService(socketClientCreator, {}, WEBSOCKET_BASE_URL)
     })
 
     test('add/remove listeners', () => {

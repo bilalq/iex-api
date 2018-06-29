@@ -22,6 +22,7 @@
       "no-default-export": false,
       "no-inferrable-types": true,
       "no-null-keyword": false,
+      "object-literal-sort-keys": false,
       "promise-function-async": false,
       "quotemark": [true, "single", "avoid-escape", "avoid-template"],
       "semicolon": [true, "never"],
