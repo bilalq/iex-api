@@ -10,14 +10,27 @@ export type SystemEventListener = (systemEvent: SystemEvent) => void
  */
 // tslint:disable:completed-docs
 export class DeepService {
-    private readonly socket: Socket
+    private readonly socketClientCreator: SocketClientCreator
+    private readonly exceptionHandlers: SocketExceptionHandlers
+    private readonly url: string
+    private socketLazy: Socket | null = null
     private listeners: DeepListener[] = []
     private systemEventListeners: SystemEventListener[] = []
 
     public constructor(socketClientCreator: SocketClientCreator, exceptionHandlers: SocketExceptionHandlers, websocketBaseUrl: string) {
-        this.socket = socketClientCreator(`${websocketBaseUrl}/deep`)
-        initExceptionHandlers(this.socket, exceptionHandlers)
-        this.socket.on('message', (raw: string) => {
+        this.socketClientCreator = socketClientCreator
+        this.exceptionHandlers = exceptionHandlers
+        this.url = `${websocketBaseUrl}/deep`
+        this.socketClientCreator = socketClientCreator
+    }
+
+    public get socket() {
+        if (this.socketLazy !== null) {
+            return this.socketLazy
+        }
+
+        this.socketLazy = this.socketClientCreator(this.url)
+        this.socketLazy.on('message', (raw: string) => {
             const response = JSON.parse(raw) as object
 
             if (response.hasOwnProperty('messageType')) {
@@ -26,6 +39,8 @@ export class DeepService {
                 this.broadcastSystemEvent(response as SystemEvent)
             }
         })
+        initExceptionHandlers(this.socketLazy, this.exceptionHandlers)
+        return this.socketLazy
     }
 
     public broadcast(response: DeepSocketResponse): void {
@@ -40,8 +55,9 @@ export class DeepService {
         })
     }
 
-    public subscribe(symbol: string, channels: DEEP_CHANNELS[]): void {
-        subscribeOnConnected(this.socket, JSON.stringify({ symbols: [symbol], channels }))
+    public subscribe(symbol: string | string[], channels: DEEP_CHANNELS[]): void {
+        const symbols: string[] = typeof symbol === 'string' ? [symbol] : symbol
+        subscribeOnConnected(this.socket, JSON.stringify({ symbols, channels }))
     }
 
     public subscribeSystemEvents(): void {

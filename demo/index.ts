@@ -16,7 +16,19 @@ const question: Question = {
     name: 'stock'
 }
 const { fetch } = fetchPonyfill()
-const wsClient = new WebsocketIEXClient(io, {
+const socketCreator = (url: string) => {
+    const res = io(url, {
+        jsonp: false,
+        reconnection: true,
+        reconnectionDelay: 100,
+        reconnectionAttempts: 100000
+      })
+
+    console.log('Custom socket creator')
+
+    return res
+}
+const wsClient = new WebsocketIEXClient(socketCreator, {
     error(error: Error) {
         console.log(error)
     },
@@ -63,6 +75,7 @@ const prompt = () => {
         client.deep(stock).then(response => {
             console.log(`DEEP http response: ${util.inspect(response, false, null)}`)
         })
+
         const printTops = (response: TopsResponse) => {
             console.log(`TOPS socket response: ${util.inspect(response)}`)
         }
