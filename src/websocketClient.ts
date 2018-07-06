@@ -152,7 +152,7 @@ export default class WebsocketIEXClient {
      * @param symbol The stock symbol
      * @param channels channels to subscribe to
      */
-    public subscribeDeep(symbol: string, channels = DEFAULT_DEEP_CHANNELS): void {
+    public subscribeDeep(symbol: string | string[], channels = DEFAULT_DEEP_CHANNELS): void {
         this.deepService.subscribe(symbol, channels)
     }
 
