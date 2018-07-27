@@ -1,3 +1,4 @@
+/* tslint:disable:newline-per-chained-call */
 import attribution from '../attribution'
 
 describe('attribution', () => {
