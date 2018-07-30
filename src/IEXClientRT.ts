@@ -1,5 +1,5 @@
 import { merge, Observable, Observer } from 'rxjs'
-import socketIO from 'socket.io-client'
+import * as socketIO from 'socket.io-client'
 
 import { RealtimeQuoteResponse } from './apis/stocks'
 
