@@ -116,8 +116,9 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    * @param range The time range to load chart data for.
    */
-  public stockChart(stockSymbol: string, range: StocksAPI.ChartRangeOption): Promise<StocksAPI.ChartResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/chart/${range}`)
+  public stockChart(stockSymbol: string, range: StocksAPI.ChartRangeOption, params?: StocksAPI.ChartParams): Promise<StocksAPI.ChartResponse> {
+    const urlSuffix = params ? `?${toParams(params)}` : ''
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/chart/${encodeURIComponent(range)}${urlSuffix}`)
   }
 
   /**

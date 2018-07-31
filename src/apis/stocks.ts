@@ -71,6 +71,14 @@ export interface QuoteResponse {
  */
 export type ChartRangeOption = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m' | '1d' | 'dynamic' | string
 
+export interface ChartParams {
+  chartReset?: boolean
+  chartSimplify?: boolean
+  chartInterval?: number
+  changeFromClose?: boolean
+  chartLast?: number
+}
+
 export interface ChartItem {
   high: number
   low: number
