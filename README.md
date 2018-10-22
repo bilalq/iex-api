@@ -64,7 +64,7 @@ use, however.
 
 ```
 npm install --save isomorphic-fetch
-npm insatll --save-dev @types/isomorphic-fetch # If using TypeScript
+npm install --save-dev @types/isomorphic-fetch # If using TypeScript
 ```
 
 ```typescript
