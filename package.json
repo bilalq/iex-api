@@ -33,10 +33,14 @@
     "url": "https://github.com/bilalq/iex-api/issues"
   },
   "homepage": "https://github.com/bilalq/iex-api#readme",
-  "dependencies": {},
+  "dependencies": {
+    "rxjs": "^6.2.2",
+    "socket.io-client": "^2.1.0"
+  },
   "devDependencies": {
     "@types/jest": "^21.1.8",
     "@types/npm": "^2.0.29",
+    "@types/socket.io-client": "^1.4.32",
     "fetch-ponyfill": "^4.1.0",
     "jest": "^21.2.1",
     "ts-jest": "^21.2.4",
