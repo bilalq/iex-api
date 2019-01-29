@@ -243,3 +243,9 @@ export interface MarketEarningsResponse {
     bto: Earnings[]
     amc: Earnings[]
 }
+export interface SectorPerformanceResponse {
+    type: string
+    name: string
+    performance: number
+    lastUpdated: number
+}

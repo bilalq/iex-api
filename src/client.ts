@@ -341,5 +341,11 @@ export default class IEXClient {
     return this.request('/stock/market/today-earnings')
   }
 
+  /**
+   * Retrieves sector performance statistics for the current trading day
+   */
+  public sectorPerformance(): Promise<MarketDataAPI.SectorPerformanceResponse> {
+    return this.request('/stock/market/sector-performance')
+  }
   // TODO: integrate channel specific DEEP endpoints
 }
