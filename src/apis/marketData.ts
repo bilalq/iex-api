@@ -1,3 +1,5 @@
+import { QuoteResponse } from ".."
+
 export interface TopsResponse {
     askPrice: number
     askSize: number
@@ -197,7 +199,7 @@ export interface DeepSocketResponse {
     symbol: string
     messageType: DEEP_CHANNELS
     data: Book | Trade | TradingStatus | OperationalHaltStatus |
-        ShortSaleRestrictionStatus | SecurityEvent | TradeBreak | Auction | OfficialPrice
+    ShortSaleRestrictionStatus | SecurityEvent | TradeBreak | Auction | OfficialPrice
 }
 
 export interface DeepResponse extends Book {
@@ -216,4 +218,23 @@ export interface DeepResponse extends Book {
     trades: Trade[]
     tradeBreaks: TradeBreak[]
     auction: Auction
+}
+
+export interface MarketEarningsResponse {
+    actualEPS: number
+    consensusEPS: number
+    estimatedEPS: number
+    announceTime: string
+    numberOfEstimates: number
+    EPSSurpriseDollar: number
+    EPSReportDate: string
+    fiscalPeriod: string
+    fiscalEndDate: string
+    yearAgo: number
+    yearAgoChangePercent: number
+    estimatedChangePercent: number
+    symbolId: string
+    symbol: string
+    quote: QuoteResponse
+    headline: string
 }
