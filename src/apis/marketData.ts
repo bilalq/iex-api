@@ -143,6 +143,25 @@ export interface SecurityEvent {
     timestamp: number
 }
 
+export interface Earnings {
+    actualEPS: number
+    consensusEPS: number
+    estimatedEPS: number
+    announceTime: string
+    numberOfEstimates: number
+    EPSSurpriseDollar: number
+    EPSReportDate: string
+    fiscalPeriod: string
+    fiscalEndDate: string
+    yearAgo: number
+    yearAgoChangePercent: number
+    estimatedChangePercent: number
+    symbolId: string
+    symbol: string
+    quote: QuoteResponse
+    headline: string
+}
+
 export interface TradeBreak {
     isISO: boolean
     isOddLot: boolean
@@ -221,20 +240,6 @@ export interface DeepResponse extends Book {
 }
 
 export interface MarketEarningsResponse {
-    actualEPS: number
-    consensusEPS: number
-    estimatedEPS: number
-    announceTime: string
-    numberOfEstimates: number
-    EPSSurpriseDollar: number
-    EPSReportDate: string
-    fiscalPeriod: string
-    fiscalEndDate: string
-    yearAgo: number
-    yearAgoChangePercent: number
-    estimatedChangePercent: number
-    symbolId: string
-    symbol: string
-    quote: QuoteResponse
-    headline: string
+    bto: Earnings[]
+    amc: Earnings[]
 }
