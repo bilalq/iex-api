@@ -49,16 +49,16 @@ export default class IEXClient {
    */
   public request(path: string): Promise<any> {
     return this.fetchFunction(`${this.httpsEndpoint}/${path}`)
-    .then(res => {
-      const contentType = res.headers.get('content-type')
-      if (contentType === null) {
-        return null
-      } else if (contentType.includes('application/json')) {
-        return res.json()
-      } else {
-        return res.text()
-      }
-    })
+      .then(res => {
+        const contentType = res.headers.get('content-type')
+        if (contentType === null) {
+          return null
+        } else if (contentType.includes('application/json')) {
+          return res.json()
+        } else {
+          return res.text()
+        }
+      })
   }
 
   /**
@@ -317,21 +317,28 @@ export default class IEXClient {
    * Retrieves latest TOPS data for specified symbol
    */
   public tops(stockSymbol: string): Promise<MarketDataAPI.TopsResponse[]> {
-      return this.request(`tops?symbols=${encodeURIComponent(stockSymbol)}`)
+    return this.request(`tops?symbols=${encodeURIComponent(stockSymbol)}`)
   }
 
   /**
    * Retrieves latest DEEP data for specified symbol
    */
   public deep(stockSymbol: string): Promise<MarketDataAPI.DeepResponse> {
-      return this.request(`deep?symbols=${encodeURIComponent(stockSymbol)}`)
+    return this.request(`deep?symbols=${encodeURIComponent(stockSymbol)}`)
   }
 
   /**
    * Retrieves latest System Event
    */
   public deepSystemEvent(): Promise<MarketDataAPI.SystemEvent> {
-      return this.request('deep/system-event')
+    return this.request('deep/system-event')
+  }
+
+  /**
+   * Retrieves market earnings for the current day
+   */
+  public marketEarnings(): Promise<MarketDataAPI.MarketEarningsResponse> {
+    return this.request('/stock/market/today-earnings')
   }
 
   // TODO: integrate channel specific DEEP endpoints
