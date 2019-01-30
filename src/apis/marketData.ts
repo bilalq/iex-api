@@ -1,4 +1,4 @@
-import { QuoteResponse } from ".."
+import { QuoteResponse } from '..'
 
 export interface TopsResponse {
     askPrice: number
@@ -243,6 +243,7 @@ export interface MarketEarningsResponse {
     bto: Earnings[]
     amc: Earnings[]
 }
+
 export interface SectorPerformanceResponse {
     type: string
     name: string
