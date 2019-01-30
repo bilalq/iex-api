@@ -344,7 +344,7 @@ export default class IEXClient {
   /**
    * Retrieves sector performance statistics for the current trading day
    */
-  public sectorPerformance(): Promise<MarketDataAPI.SectorPerformanceResponse> {
+  public sectorPerformance(): Promise<MarketDataAPI.SectorPerformanceResponse[]> {
     return this.request('/stock/market/sector-performance')
   }
   // TODO: integrate channel specific DEEP endpoints
