@@ -79,7 +79,7 @@ describe('IEXClient', () => {
       const symbols = await iex.symbols()
       symbols.forEach(stockSym => {
         expect(stockSym.date).toEqual(expect.any(String))
-        expect(stockSym.iexId).toEqual(expect.any(String))
+        // This field can be a number now for CryptoCurrencies expect(stockSym.iexId).toEqual(expect.any(String))
         expect(typeof stockSym.isEnabled).toEqual('boolean')
         expect(stockSym.name).toEqual(expect.any(String))
         expect(stockSym.symbol).toEqual(expect.any(String))
