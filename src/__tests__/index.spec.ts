@@ -4,26 +4,26 @@
  * @format
  */
 
-import attribution from '../attribution'
-import client from '../client'
+import { attribution } from '../attribution';
 import {
-  Attribution as indexAttribution,
-  IEXClient as indexClient
-} from '../index'
+  attribution as indexAttribution,
+  IEXClient as indexClient,
+  IEXClient
+} from '../index';
 
 describe('index', () => {
   it('exposes the IEX Attribution information', () => {
-    expect(indexAttribution.citation).toEqual(attribution.citation)
-    expect(indexAttribution.link).toEqual(attribution.link)
+    expect(indexAttribution.citation).toEqual(attribution.citation);
+    expect(indexAttribution.link).toEqual(attribution.link);
     expect(indexAttribution.termsOfServiceLink).toEqual(
       attribution.termsOfServiceLink
-    )
+    );
     expect(indexAttribution.topsPriceDataCitation).toEqual(
       attribution.topsPriceDataCitation
-    )
-  })
+    );
+  });
 
   it('exposes the IEX Client constructor', () => {
-    expect(indexClient).toBe(IEXClient)
-  })
-})
+    expect(indexClient).toBe(IEXClient);
+  });
+});

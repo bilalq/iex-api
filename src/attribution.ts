@@ -10,4 +10,4 @@ export const attribution = {
   link: 'https://iextrading.com/developer',
   termsOfServiceLink: 'https://iextrading.com/api-exhibit-a',
   topsPriceDataCitation: 'IEX Real-Time Price'
-}
+};

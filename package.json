@@ -35,6 +35,10 @@
   },
   "homepage": "https://github.com/bilalq/iex-api#readme",
   "dependencies": {
+    "@types/inquirer": "0.0.44",
+    "@types/node-fetch": "^2.1.6",
+    "inquirer": "^6.2.2",
+    "node-fetch": "^2.3.0",
     "prettier": "^1.16.4",
     "prettier-tslint": "^0.4.2",
     "rxjs": "^6.2.2",
