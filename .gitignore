@@ -59,6 +59,3 @@ typings/
 
 # Compiled artifacts
 build/
-
-# NPM package lockfile
-package-lock.json
