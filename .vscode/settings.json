@@ -1,4 +1,7 @@
 {
-  "prettier.semi": false,
-  "prettier.requireConfig": true
+  "prettier.printWidth": 155,
+  "prettier.singleQuote": true,
+  "prettier.requireConfig": true,
+  "prettier.tslintIntegration": true,
+  "editor.formatOnSave": true
 }

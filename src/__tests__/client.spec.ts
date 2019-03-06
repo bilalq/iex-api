@@ -3,14 +3,17 @@
 /* tslint:disable:no-var-requires */
 /* tslint:disable:no-require-imports */
 /* tslint:disable:no-implicit-dependencies */
+// tslint:disable: completed-docs
+
 import IEXClient from '../client'
 
-const realFetch: typeof fetch = require('fetch-ponyfill')().fetch as typeof fetch // tslint:disable-line:no-unsafe-any
+const realFetch: typeof fetch = require('fetch-ponyfill')()
+  .fetch as typeof fetch // tslint:disable-line:no-unsafe-any
 let fetchMock: typeof fetch
 let resMock: {
-  headers: Map<string, string | null>
-  json(): string
-  text(): string
+  headers: Map<string, string | null>;
+  json(): string;
+  text(): string;
 }
 
 describe('IEXClient', () => {
@@ -29,7 +32,9 @@ describe('IEXClient', () => {
       const client = new IEXClient(fetchMock)
       return client.request('testExample').then(res => {
         expect(res).toBe(null)
-        expect(fetchMock).toHaveBeenCalledWith('https://api.iextrading.com/1.0/testExample')
+        expect(fetchMock).toHaveBeenCalledWith(
+          'https://api.iextrading.com/1.0/testExample'
+        )
       })
     })
 
@@ -38,7 +43,9 @@ describe('IEXClient', () => {
       const client = new IEXClient(fetchMock, 'https://example.com')
       return client.request('testExample').then(res => {
         expect(res).toBe(null)
-        expect(fetchMock).toHaveBeenCalledWith('https://example.com/testExample')
+        expect(fetchMock).toHaveBeenCalledWith(
+          'https://example.com/testExample'
+        )
       })
     })
 
@@ -48,7 +55,9 @@ describe('IEXClient', () => {
       const client = new IEXClient(fetchMock, 'https://example.com')
       return client.request('testExample').then(res => {
         expect(res).toBe('mocked json')
-        expect(fetchMock).toHaveBeenCalledWith('https://example.com/testExample')
+        expect(fetchMock).toHaveBeenCalledWith(
+          'https://example.com/testExample'
+        )
       })
     })
 
@@ -58,7 +67,9 @@ describe('IEXClient', () => {
       const client = new IEXClient(fetchMock, 'https://example.com')
       return client.request('testExample').then(res => {
         expect(res).toBe('mocked text')
-        expect(fetchMock).toHaveBeenCalledWith('https://example.com/testExample')
+        expect(fetchMock).toHaveBeenCalledWith(
+          'https://example.com/testExample'
+        )
       })
     })
   })
