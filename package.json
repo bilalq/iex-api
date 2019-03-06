@@ -36,7 +36,11 @@
   },
   "homepage": "https://github.com/bilalq/iex-api#readme",
   "dependencies": {
+<<<<<<< HEAD
     "rxjs": "^6.2.2",
+=======
+    "rxjs": "^6.2.0",
+>>>>>>> tdip
     "socket.io-client": "^2.1.0"
   },
   "devDependencies": {
