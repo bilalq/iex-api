@@ -30,7 +30,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
+dist/Release
 
 # Dependency directories
 node_modules/
@@ -58,7 +58,6 @@ typings/
 .env
 
 # Compiled artifacts
-build/
+dist/
 
-# NPM package lockfile
-package-lock.json
+tmp/

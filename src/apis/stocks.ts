@@ -1,5 +1,30 @@
 /* tslint:disable:no-magic-numbers */
 
+export type StockEndpoint =
+  | 'book'
+  | 'chart'
+  | 'company'
+  | 'delayed-quote'
+  | 'dividends'
+  | 'earnings'
+  | 'effective-spread'
+  | 'financials'
+  | 'threshold-securities'
+  | 'short-interest'
+  | 'stats'
+  | 'largest-trades'
+  | 'logo'
+  | 'news'
+  | 'ohlc'
+  | 'peers'
+  | 'previous'
+  | 'price'
+  | 'quote'
+  | 'relevant'
+  | 'splits'
+  | 'volume-by-venue'
+  | string
+
 export interface QuoteResponse {
   symbol: string
   companyName: string
@@ -10,6 +35,8 @@ export interface QuoteResponse {
   openTime: number
   close: number
   closeTime: number
+  high: number
+  low: number
   latestPrice: number
   latestSource: 'IEX real time price' | '15 minute delayed price' | 'Close' | 'Previous close'
   latestTime: string
@@ -43,6 +70,14 @@ export interface QuoteResponse {
  * catch-all string.
  */
 export type ChartRangeOption = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m' | '1d' | 'dynamic' | string
+
+export interface ChartParams {
+  chartReset?: boolean
+  chartSimplify?: boolean
+  chartInterval?: number
+  changeFromClose?: boolean
+  chartLast?: number
+}
 
 export interface ChartItem {
   high: number
@@ -305,4 +340,29 @@ venueName: string
 date: string | null
 marketPercent: number
 avgMarketPercent: number
+}
+
+/**
+ * Response type when fetching realtime data
+ * for stocks.
+ */
+<<<<<<< HEAD
+export type RealtimeQuoteResponse = {
+=======
+export interface RealtimeQuoteResponse {
+>>>>>>> 20df792e63fbaad187d7de1f42b7fc4a6abb73df
+  readonly symbol: string,
+  readonly sector: string,
+  readonly securityType: string,
+  readonly bidPrice: number,
+  readonly bidSize: number,
+  readonly askPrice: number,
+  readonly askSize: number,
+  readonly lastUpdated: number,
+  readonly lastSalePrice: number,
+  readonly lastSaleSize: number,
+  readonly lastSaleITime: number,
+  readonly volume: number,
+  readonly marketPercent: number,
+  readonly seq: number
 }

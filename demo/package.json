@@ -1,0 +1,25 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts"
+  },
+  "dependencies": {
+    "fetch-ponyfill": "^6.0.2",
+    "inquirer": "^6.0.0",
+    "socket.io-client": "^2.1.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/inquirer": "0.0.41",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/node": "^10.3.3",
+    "nodemon": "^1.17.5",
+    "ts-node": "^6.1.1",
+    "typescript": "^2.9.2"
+  }
+}

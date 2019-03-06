@@ -1,3 +1,4 @@
+/* tslint:disable:newline-per-chained-call */
 /* tslint:disable:no-magic-numbers */
 /* tslint:disable:no-var-requires */
 /* tslint:disable:no-require-imports */
@@ -79,7 +80,8 @@ describe('IEXClient', () => {
       const symbols = await iex.symbols()
       symbols.forEach(stockSym => {
         expect(stockSym.date).toEqual(expect.any(String))
-        expect(stockSym.iexId).toEqual(expect.any(String))
+        // This field can be a number now for CryptoCurrencies expect(stockSym.iexId).toEqual(expect.any(String))
+        expect(parseInt(stockSym.iexId, 10)).not.toBeNaN()
         expect(typeof stockSym.isEnabled).toEqual('boolean')
         expect(stockSym.name).toEqual(expect.any(String))
         expect(stockSym.symbol).toEqual(expect.any(String))
