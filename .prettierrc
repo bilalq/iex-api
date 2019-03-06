@@ -4,7 +4,6 @@
   "endOfLine": "auto",
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": true,
-  "printWidth": 80,
   "proseWrap": "preserve",
   "rangeStart": 0,
   "semi": true,
