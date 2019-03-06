@@ -3,30 +3,18 @@ import * as socketIO from 'socket.io-client'
 
 import { RealtimeQuoteResponse } from './apis/stocks'
 
-<<<<<<< HEAD
 interface SubscriptionEntry {
-=======
-interface SubscriptionEntry{
->>>>>>> tdip
     readonly observable: Observable<RealtimeQuoteResponse>,
     next(value: RealtimeQuoteResponse): any,
     complete(): any,
     readonly count: number
 }
 
-<<<<<<< HEAD
 interface Subscriptions {
     [topic: string]: SubscriptionEntry | undefined
 }
 
 interface EntryHandler {
-=======
-interface Subscriptions{
-    [topic: string]: SubscriptionEntry
-}
-
-interface EntryHandler{
->>>>>>> tdip
     onEmpty(): any,
     onResumend(): any
 }
@@ -38,7 +26,6 @@ interface EntryHandler{
  * subscribes to the topic or when all observers unsubscribe
  */
 const createEntry = (handler: EntryHandler) => {
-<<<<<<< HEAD
     const observers: Array<Observer<RealtimeQuoteResponse>> = []
     const observable = Observable.create((observer: Observer<RealtimeQuoteResponse>) => {
         observers.push(observer)
@@ -74,60 +61,21 @@ const createEntry = (handler: EntryHandler) => {
         },
         get count() {
             return observers.length
-=======
-    const observers: Array<Observer<RealtimeQuoteResponse>> = [];
-    const observable = Observable.create((observer: Observer<RealtimeQuoteResponse>) => {
-        observers.push(observer);
-        if(observers.length === 1){
-            handler.onResumend();
-        }
-
-        return () => {
-            const ix = observers.findIndex(_observer => observer === _observer);
-
-            if(ix >= 0){
-                observers.splice(ix, 1);
-
-                if(observers.length === 0){
-                    handler.onEmpty();
-                }
-            }
-        }
-    });
-
-    return {
-        observable,
-        next(value: RealtimeQuoteResponse){
-            observers.forEach(o => o.next(value));
-        },
-        complete(){
-            observers.forEach(o => o.complete());
-            observers.splice(0, observers.length);
-        },
-        get count(){
-            return observers.length;
->>>>>>> tdip
         }
     }
 }
 
-<<<<<<< HEAD
 const endpoint = 'https://ws-api.iextrading.com/1.0/tops'
 
 export type SocketIOBuilder = (endpoint: string) => SocketIOClient.Socket
 
 const socketIOConnect = (host: string) => socketIO.connect(host)
-=======
-const endpoint = 'https://ws-api.iextrading.com/1.0/tops';
 
-export type SocketIOBuilder = (endpoint: string) => SocketIOClient.Socket;
->>>>>>> tdip
 
 /**
  * Client for observing realtime data streams
  * produced by IEX.
  */
-<<<<<<< HEAD
 export default class IEXClientRT {
 
     private isReady: boolean
@@ -232,75 +180,7 @@ export default class IEXClientRT {
         }
 
         return observable.observable
-=======
-export default class IEXClientRT{
 
-    private isReady: boolean;
-
-    private readonly socket: SocketIOClient.Socket;
-
-    private readonly subscriptions: Subscriptions;
-
-    constructor(socketBuilder?: SocketIOBuilder){
-        this.onConnect = this.onConnect.bind(this);
-        this.onMessage = this.onMessage.bind(this);
-        this.subscribePending = this.subscribePending.bind(this);
-        this.subscribeIfReady = this.subscribeIfReady.bind(this);
-        this.getOrCreateObservable = this.getOrCreateObservable.bind(this);
-        this.observe = this.observe.bind(this);
-
-        this.isReady = false;
-        this.subscriptions = {};
-        socketBuilder = socketBuilder || socketIO;
-        this.socket = socketBuilder(endpoint);
-        this.socket.on('connect', this.onConnect);
-        this.socket.on('message', this.onMessage);
-    }
-
-    private onMessage(_message: string){
-        const message = JSON.parse(_message);
-        const topic = message.symbol;
-        const entry = this.subscriptions[topic];
-        if(entry){
-            entry.next(message);
-        }
-    }
-
-    private onConnect(){
-        this.isReady = true;
-        this.subscribePending();
-    }
-
-    private subscribePending(){
-        const pending = Object.keys(this.subscriptions)
-            .filter(key => this.subscriptions[key].count > 0);
-
-        if(pending.length > 0){
-            this.socket.emit('subscribe', pending.join());
-        }
-    }
-
-    private subscribeIfReady(topic: string){
-        if(!this.isReady){
-            return;
-        }
-
-        this.socket.emit('subscribe', topic);
-    }
-
-    private getOrCreateObservable(topic: string): Observable<RealtimeQuoteResponse>{
-        topic = topic.toUpperCase();
-        let observable = this.subscriptions[topic];
-
-        if(!observable){
-            this.subscriptions[topic] = observable = createEntry({
-                onResumend: () => this.subscribeIfReady(topic),
-                onEmpty: () => this.socket.emit('unsubscribe', topic)
-            });
-        }
-
-        return observable.observable;
->>>>>>> tdip
     }
 
     /**
@@ -308,14 +188,7 @@ export default class IEXClientRT{
      * securities passed as parameter changes
      * @param topics The securities one wishes to subscribe
      */
-<<<<<<< HEAD
     public observe(...topics: string[]): Observable<RealtimeQuoteResponse> {
         return merge(...topics.map(t => this.getOrCreateObservable(t)))
     }
 }
-=======
-    public observe(...topics: string[]): Observable<RealtimeQuoteResponse>{
-        return merge(...topics.map(this.getOrCreateObservable));
-    }
-}
->>>>>>> tdip
