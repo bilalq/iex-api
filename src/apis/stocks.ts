@@ -346,7 +346,11 @@ avgMarketPercent: number
  * Response type when fetching realtime data
  * for stocks.
  */
+<<<<<<< HEAD
 export type RealtimeQuoteResponse = {
+=======
+export interface RealtimeQuoteResponse {
+>>>>>>> 20df792e63fbaad187d7de1f42b7fc4a6abb73df
   readonly symbol: string,
   readonly sector: string,
   readonly securityType: string,

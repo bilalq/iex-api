@@ -88,6 +88,30 @@ iex.stockCompany('AAPL')
   // }
 ```
 
+### Subscribe to a topic (NodeJS Only)
+
+The following code demostrates how to subscribe to an IEX reltime
+feed via NodeJS. IEX curretnly does not support subscribing from
+other platforms.
+
+```typescript
+import { IEXClientRT } from 'iex-api'
+
+const iexRT = new IEXClientRT()
+iexRT.observe('TWLO', 'MSFT').subscribe(update => console.log(update))
+```
+
+Or using promises
+```typescript
+import { IEXClientRT } from 'iex-api'
+import { take, toArray } from 'rxjs/operator'
+
+const iexRT = new IEXClientRT()
+iexRT.observe('TWLO', 'MSFT')
+  .pipe(take(5), toArray())
+  .toPromise()
+  .then(values => console.log(values))
+```
 
 To Do:
 ------
