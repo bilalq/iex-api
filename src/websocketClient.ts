@@ -87,7 +87,7 @@ export const initExceptionHandlers = (
 /**
  * Client to subscribe to and receive updates published via websocket from IEX
  */
-export default class WebsocketIEXClient {
+export class WebsocketIEXClient {
   private readonly socketClientCreator: SocketClientCreator
   private readonly websocketBaseUrl: string
 

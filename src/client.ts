@@ -18,7 +18,7 @@ const toParams = (params: any): string =>
  * This class handles communication with the IEX API in a type-safe and flexible
  * way. It is usable in Browser, React Native, and NodeJS contexts.
  */
-export default class IEXClient {
+export class IEXClient {
   private readonly fetchFunction: typeof fetch
   private readonly httpsEndpoint: string
 
