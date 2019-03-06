@@ -1,4 +1,9 @@
-/* tslint:disable:newline-per-chained-call */
+/**
+ * /* tslint:disable:newline-per-chained-call
+ *
+ * @format
+ */
+
 import attribution from '../attribution'
 
 describe('attribution', () => {

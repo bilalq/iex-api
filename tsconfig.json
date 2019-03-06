@@ -45,7 +45,7 @@
       "configFile": "./tslint.json",
       "suppressWhileTypeErrorsPresent": false,
       "mockTypeScriptVersion": false,
-      "exclude": ["build", "node_modules", "demo"]
+      "exclude": ["build", "node_modules", "demo", "src/__tests__/**/*"]
     }
   ]
 }

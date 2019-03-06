@@ -1,4 +1,8 @@
-/* tslint:disable:no-magic-numbers */
+/**
+ * /* tslint:disable:no-magic-numbers
+ *
+ * @format
+ */
 
 export type StockEndpoint =
   | 'book'
@@ -38,7 +42,11 @@ export interface QuoteResponse {
   high: number
   low: number
   latestPrice: number
-  latestSource: 'IEX real time price' | '15 minute delayed price' | 'Close' | 'Previous close'
+  latestSource:
+    | 'IEX real time price'
+    | '15 minute delayed price'
+    | 'Close'
+    | 'Previous close'
   latestTime: string
   latestUpdate: number
   latestVolume: number
@@ -69,7 +77,17 @@ export interface QuoteResponse {
  * There's no way to express 'date/<YYYYMMDD>' as a type outside of a generic
  * catch-all string.
  */
-export type ChartRangeOption = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m' | '1d' | 'dynamic' | string
+export type ChartRangeOption =
+  | '5y'
+  | '2y'
+  | '1y'
+  | 'ytd'
+  | '6m'
+  | '3m'
+  | '1m'
+  | '1d'
+  | 'dynamic'
+  | string
 
 export interface ChartParams {
   chartReset?: boolean
@@ -108,12 +126,12 @@ export type ChartResponse = OneDayChartItem[] | MultiDayChartItem[]
 
 export interface OpenCloseResponse {
   open: {
-    price: number
-    time: number
+    price: number;
+    time: number;
   }
   close: {
-    price: number
-    time: number
+    price: number;
+    time: number;
   }
 }
 
@@ -186,21 +204,68 @@ export interface News {
   related: string
 }
 
-export type NewsRange = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
-  13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 |
-  28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 |
-  43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
+export type NewsRange =
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 20
+  | 21
+  | 22
+  | 23
+  | 24
+  | 25
+  | 26
+  | 27
+  | 28
+  | 29
+  | 30
+  | 31
+  | 32
+  | 33
+  | 34
+  | 35
+  | 36
+  | 37
+  | 38
+  | 39
+  | 40
+  | 41
+  | 42
+  | 43
+  | 44
+  | 45
+  | 46
+  | 47
+  | 48
+  | 49
+  | 50
 
 export type SplitRange = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m'
 
 export interface Split {
-exDate: string
-declaredDate: string
-recordDate: string
-paymentDate: string
-ratio: number
-toFactor: number // TODO: API docs say string, but this looks to actually be a number
-forFactor: number // TODO: API docs say string, but this looks to actually be a number
+  exDate: string
+  declaredDate: string
+  recordDate: string
+  paymentDate: string
+  ratio: number
+  toFactor: number // TODO: API docs say string, but this looks to actually be a number
+  forFactor: number // TODO: API docs say string, but this looks to actually be a number
 }
 
 export interface LogoResponse {
@@ -305,9 +370,14 @@ export interface Dividend {
   declaredDate: string
   amount: number
   flag: string // TODO: API docs don't mention this, but this can probably be an enum
-  type: 'Dividend income' | 'Interest income' | 'Stock dividend' |
-        'Short term capital gain' | 'Medium term capital gain' |
-        'Long term capital gain' | 'Unspecified term capital gain'
+  type:
+    | 'Dividend income'
+    | 'Interest income'
+    | 'Stock dividend'
+    | 'Short term capital gain'
+    | 'Medium term capital gain'
+    | 'Long term capital gain'
+    | 'Unspecified term capital gain'
   qualified: 'P' | 'Q' | 'N' | '' | null // TODO: API Docs say null here, but we need to confirm if that ever happens
   indicated: string // TODO: API docs don't mention this, but this can probably be an enum
 }
@@ -322,7 +392,12 @@ export interface DelayedQuoteResponse {
   processedTime: number
 }
 
-export type MarketList = 'mostactive' | 'gainers' | 'losers' | 'iexvolume' | 'iexpercent'
+export type MarketList =
+  | 'mostactive'
+  | 'gainers'
+  | 'losers'
+  | 'iexvolume'
+  | 'iexpercent'
 
 export interface EffectiveSpread {
   volume: number // TODO: API docs say this is a string, but it looks like it's a number
@@ -334,12 +409,12 @@ export interface EffectiveSpread {
 }
 
 export interface VolumeByVenue {
-volume: number
-venue: string
-venueName: string
-date: string | null
-marketPercent: number
-avgMarketPercent: number
+  volume: number
+  venue: string
+  venueName: string
+  date: string | null
+  marketPercent: number
+  avgMarketPercent: number
 }
 
 /**
@@ -347,18 +422,18 @@ avgMarketPercent: number
  * for stocks.
  */
 export interface RealtimeQuoteResponse {
-  readonly symbol: string,
-  readonly sector: string,
-  readonly securityType: string,
-  readonly bidPrice: number,
-  readonly bidSize: number,
-  readonly askPrice: number,
-  readonly askSize: number,
-  readonly lastUpdated: number,
-  readonly lastSalePrice: number,
-  readonly lastSaleSize: number,
-  readonly lastSaleITime: number,
-  readonly volume: number,
-  readonly marketPercent: number,
+  readonly symbol: string
+  readonly sector: string
+  readonly securityType: string
+  readonly bidPrice: number
+  readonly bidSize: number
+  readonly askPrice: number
+  readonly askSize: number
+  readonly lastUpdated: number
+  readonly lastSalePrice: number
+  readonly lastSaleSize: number
+  readonly lastSaleITime: number
+  readonly volume: number
+  readonly marketPercent: number
   readonly seq: number
 }

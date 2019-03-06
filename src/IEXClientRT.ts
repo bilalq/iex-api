@@ -1,3 +1,5 @@
+/** @format */
+
 // tslint:disable: completed-docs
 
 import { merge, Observable, Observer } from 'rxjs'
@@ -31,6 +33,7 @@ interface EntryHandler {
  * subscribes to the topic or when all observers unsubscribe
  */
 const createEntry = (handler: EntryHandler) => {
+  // tslint:disable-next-line: prefer-array-literal
   const observers: Array<Observer<RealtimeQuoteResponse>> = []
   const observable = Observable.create(
     (observer: Observer<RealtimeQuoteResponse>) => {

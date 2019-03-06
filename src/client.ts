@@ -1,8 +1,11 @@
+/** @format */
+
 import * as MarketDataAPI from './apis/marketData'
 import * as ReferenceDataAPI from './apis/referenceData'
 import * as StocksAPI from './apis/stocks'
 
-const toQueryList = (values: string[]): string => values.map(encodeURIComponent).join(',')
+const toQueryList = (values: string[]): string =>
+  values.map(encodeURIComponent).join(',')
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
@@ -28,7 +31,10 @@ export default class IEXClient {
    *  Unless you have a specific mock endpoint or the like in mind, it is
    *  recommended to omit this argument.
    */
-  public constructor(fetchFunction: typeof fetch, httpsEndpoint = 'https://api.iextrading.com/1.0') {
+  public constructor(
+    fetchFunction: typeof fetch,
+    httpsEndpoint = 'https://api.iextrading.com/1.0'
+  ) {
     this.fetchFunction = fetchFunction
     this.httpsEndpoint = httpsEndpoint
     this.request = this.request.bind(this) // tslint:disable-line:no-unsafe-any
@@ -48,17 +54,16 @@ export default class IEXClient {
    * @param path The path to hit the IEX API endpoint at.
    */
   public request(path: string): Promise<any> {
-    return this.fetchFunction(`${this.httpsEndpoint}/${path}`)
-      .then(res => {
-        const contentType = res.headers.get('content-type')
-        if (contentType === null) {
-          return null
-        } else if (contentType.includes('application/json')) {
-          return res.json()
-        } else {
-          return res.text()
-        }
-      })
+    return this.fetchFunction(`${this.httpsEndpoint}/${path}`).then(res => {
+      const contentType = res.headers.get('content-type')
+      if (contentType === null) {
+        return null
+      }
+      if (contentType.includes('application/json')) {
+        return res.json()
+      }
+      return res.text()
+    })
   }
 
   /**
@@ -91,10 +96,18 @@ export default class IEXClient {
     const paramSuffix = params ? toParams(params) : ''
 
     if (typeof types === 'string') {
-      return this.request(`/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(symbols)}${paramSuffix}`)
+      return this.request(
+        `/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(
+          symbols
+        )}${paramSuffix}`
+      )
     }
 
-    return this.request(`/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(symbols)}${paramSuffix}`)
+    return this.request(
+      `/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(
+        symbols
+      )}${paramSuffix}`
+    )
   }
 
   /**
@@ -104,9 +117,14 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    * @param [displayPercent=false] If set to true, all percentage values will be multiplied by a factor of 100.
    */
-  public stockQuote(stockSymbol: string, displayPercent?: boolean): Promise<StocksAPI.QuoteResponse> {
+  public stockQuote(
+    stockSymbol: string,
+    displayPercent?: boolean
+  ): Promise<StocksAPI.QuoteResponse> {
     const queryString = displayPercent ? '?displayPercent=true' : ''
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/quote${queryString}`)
+    return this.request(
+      `/stock/${encodeURIComponent(stockSymbol)}/quote${queryString}`
+    )
   }
 
   /**
@@ -116,9 +134,17 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    * @param range The time range to load chart data for.
    */
-  public stockChart(stockSymbol: string, range: StocksAPI.ChartRangeOption, params?: StocksAPI.ChartParams): Promise<StocksAPI.ChartResponse> {
+  public stockChart(
+    stockSymbol: string,
+    range: StocksAPI.ChartRangeOption,
+    params?: StocksAPI.ChartParams
+  ): Promise<StocksAPI.ChartResponse> {
     const urlSuffix = params ? `?${toParams(params)}` : ''
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/chart/${encodeURIComponent(range)}${urlSuffix}`)
+    return this.request(
+      `/stock/${encodeURIComponent(stockSymbol)}/chart/${encodeURIComponent(
+        range
+      )}${urlSuffix}`
+    )
   }
 
   /**
@@ -127,7 +153,9 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#open-close
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockOpenClose(stockSymbol: string): Promise<StocksAPI.OpenCloseResponse> {
+  public stockOpenClose(
+    stockSymbol: string
+  ): Promise<StocksAPI.OpenCloseResponse> {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/open-close`)
   }
 
@@ -138,7 +166,9 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#previous
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockPrevious(stockSymbol: string): Promise<StocksAPI.PreviousResponse> {
+  public stockPrevious(
+    stockSymbol: string
+  ): Promise<StocksAPI.PreviousResponse> {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/previous`)
   }
 
@@ -158,7 +188,9 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#key-stats
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockKeyStats(stockSymbol: string): Promise<StocksAPI.KeyStatsResponse> {
+  public stockKeyStats(
+    stockSymbol: string
+  ): Promise<StocksAPI.KeyStatsResponse> {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/stats`)
   }
 
@@ -181,7 +213,9 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#relevant
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockRelevant(stockSymbol: string): Promise<StocksAPI.RelevantResponse> {
+  public stockRelevant(
+    stockSymbol: string
+  ): Promise<StocksAPI.RelevantResponse> {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/relevant`)
   }
 
@@ -193,12 +227,16 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch news for.
    * @param [range=10] The number of news articles to pull. Defaults to 10 if omitted.
    */
-  public stockNews(stockSymbol: string, range?: StocksAPI.NewsRange): Promise<StocksAPI.News[]> {
+  public stockNews(
+    stockSymbol: string,
+    range?: StocksAPI.NewsRange
+  ): Promise<StocksAPI.News[]> {
     if (range) {
-      return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news/last/${range}`)
-    } else {
-      return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news`)
+      return this.request(
+        `/stock/${encodeURIComponent(stockSymbol)}/news/last/${range}`
+      )
     }
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news`)
   }
 
   /**
@@ -207,7 +245,9 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#financials
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockFinancials(stockSymbol: string): Promise<StocksAPI.FinancialsResponse> {
+  public stockFinancials(
+    stockSymbol: string
+  ): Promise<StocksAPI.FinancialsResponse> {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials`)
   }
 
@@ -217,7 +257,9 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#earnings
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockEarnings(stockSymbol: string): Promise<StocksAPI.EarningsResponse> {
+  public stockEarnings(
+    stockSymbol: string
+  ): Promise<StocksAPI.EarningsResponse> {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/earnings`)
   }
 
@@ -228,8 +270,13 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    * @param range The date range to get dividends from.
    */
-  public stockDividends(stockSymbol: string, range: StocksAPI.DividendRange): Promise<StocksAPI.Dividend[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/dividends/${range}`)
+  public stockDividends(
+    stockSymbol: string,
+    range: StocksAPI.DividendRange
+  ): Promise<StocksAPI.Dividend[]> {
+    return this.request(
+      `/stock/${encodeURIComponent(stockSymbol)}/dividends/${range}`
+    )
   }
 
   /**
@@ -239,8 +286,13 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    * @param range The date range to get splits from.
    */
-  public stockSplits(stockSymbol: string, range: StocksAPI.SplitRange): Promise<StocksAPI.Split[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/splits/${range}`)
+  public stockSplits(
+    stockSymbol: string,
+    range: StocksAPI.SplitRange
+  ): Promise<StocksAPI.Split[]> {
+    return this.request(
+      `/stock/${encodeURIComponent(stockSymbol)}/splits/${range}`
+    )
   }
 
   /**
@@ -282,7 +334,10 @@ export default class IEXClient {
    * @param list The market list to fetch quotes from.
    * @param [displayPercent=false] If set to true, all percentage values will be multiplied by a factor of 100.
    */
-  public stockMarketListTopTen(list: StocksAPI.MarketList, displayPercent?: boolean): Promise<StocksAPI.QuoteResponse[]> {
+  public stockMarketListTopTen(
+    list: StocksAPI.MarketList,
+    displayPercent?: boolean
+  ): Promise<StocksAPI.QuoteResponse[]> {
     const queryString = displayPercent ? '?displayPercent=true' : ''
     return this.request(`/stock/market/list/${list}${queryString}`)
   }
@@ -297,8 +352,12 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#effective-spread
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockEffectiveSpread(stockSymbol: string): Promise<StocksAPI.EffectiveSpread[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/effective-spread`)
+  public stockEffectiveSpread(
+    stockSymbol: string
+  ): Promise<StocksAPI.EffectiveSpread[]> {
+    return this.request(
+      `/stock/${encodeURIComponent(stockSymbol)}/effective-spread`
+    )
   }
 
   /**
@@ -309,8 +368,12 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#volume-by-venue
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockVolumeByVenue(stockSymbol: string): Promise<StocksAPI.VolumeByVenue[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/volume-by-venue`)
+  public stockVolumeByVenue(
+    stockSymbol: string
+  ): Promise<StocksAPI.VolumeByVenue[]> {
+    return this.request(
+      `/stock/${encodeURIComponent(stockSymbol)}/volume-by-venue`
+    )
   }
 
   /**
@@ -344,7 +407,9 @@ export default class IEXClient {
   /**
    * Retrieves sector performance statistics for the current trading day
    */
-  public sectorPerformance(): Promise<MarketDataAPI.SectorPerformanceResponse[]> {
+  public sectorPerformance(): Promise<
+    MarketDataAPI.SectorPerformanceResponse[]
+  > {
     return this.request('/stock/market/sector-performance')
   }
   // TODO: integrate channel specific DEEP endpoints

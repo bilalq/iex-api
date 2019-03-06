@@ -1,11 +1,16 @@
-/* tslint:disable:newline-per-chained-call */
+/**
+ * /* tslint:disable:newline-per-chained-call
+ *
+ * @format
+ */
+
 /* tslint:disable:no-magic-numbers */
 /* tslint:disable:no-var-requires */
 /* tslint:disable:no-require-imports */
 /* tslint:disable:no-implicit-dependencies */
 // tslint:disable: completed-docs
 
-import IEXClient from '../client'
+import client from '../client'
 
 const realFetch: typeof fetch = require('fetch-ponyfill')()
   .fetch as typeof fetch // tslint:disable-line:no-unsafe-any
