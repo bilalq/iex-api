@@ -1,7 +1,2 @@
-import Attribution from './attribution'
-import IEXClient from './client'
-
-export {
-  Attribution,
-  IEXClient
-}
+export {default as  Attribution} from './attribution'
+export {default as  IEXClient} from './client'
