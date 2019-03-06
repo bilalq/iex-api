@@ -5,7 +5,7 @@
  * @format
  */
 
-export default {
+export const attribution = {
   citation: 'Data provided for free by IEX.',
   link: 'https://iextrading.com/developer',
   termsOfServiceLink: 'https://iextrading.com/api-exhibit-a',
