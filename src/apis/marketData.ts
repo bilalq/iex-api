@@ -1,21 +1,21 @@
 /** @format */
 
-import { QuoteResponse } from '..'
+import { QuoteResponse } from '..';
 
 export interface TopsResponse {
-  askPrice: number
-  askSize: number
-  bidPrice: number
-  bidSize: number
-  lastUpdated: number
-  lastSalePrice: number
-  lastSaleSize: number
-  lastSaleTime: number
-  marketPercent: number
-  sector: string
-  securityType: string
-  symbol: string
-  volume: number
+  askPrice: number;
+  askSize: number;
+  bidPrice: number;
+  bidSize: number;
+  lastUpdated: number;
+  lastSalePrice: number;
+  lastSaleSize: number;
+  lastSaleTime: number;
+  marketPercent: number;
+  sector: string;
+  securityType: string;
+  symbol: string;
+  volume: number;
 }
 
 /**
@@ -44,26 +44,26 @@ export enum SYSTEM_DEEP_CHANNELS {
 }
 
 export interface SizePrice {
-  price: number
-  size: number
-  timestamp: number
+  price: number;
+  size: number;
+  timestamp: number;
 }
 
 export interface Book {
-  asks: SizePrice[]
-  bids: SizePrice[]
+  asks: SizePrice[];
+  bids: SizePrice[];
 }
 
 export interface Trade {
-  isISO: boolean
-  isOddLot: boolean
-  isOutsideRegularHours: boolean
-  isSinglePriceCross: boolean
-  isTradeThroughExempt: boolean
-  price: number
-  size: number
-  timestamp: number
-  tradeId: number
+  isISO: boolean;
+  isOddLot: boolean;
+  isOutsideRegularHours: boolean;
+  isSinglePriceCross: boolean;
+  isTradeThroughExempt: boolean;
+  price: number;
+  size: number;
+  timestamp: number;
+  tradeId: number;
 }
 
 /**
@@ -79,8 +79,8 @@ export enum SYSTEM_EVENTS {
 }
 
 export interface SystemEvent {
-  systemEvent: SYSTEM_EVENTS
-  timestamp: number
+  systemEvent: SYSTEM_EVENTS;
+  timestamp: number;
 }
 
 /**
@@ -116,20 +116,20 @@ export enum ORDER_ACCEPTANCE_PERIOD_REASONS {
 }
 
 export interface TradingStatus {
-  reason: TRADING_HALT_REASONS | ORDER_ACCEPTANCE_PERIOD_REASONS
-  status: TRADING_STATUSES
-  timestamp: number
+  reason: TRADING_HALT_REASONS | ORDER_ACCEPTANCE_PERIOD_REASONS;
+  status: TRADING_STATUSES;
+  timestamp: number;
 }
 
 export interface OperationalHaltStatus {
-  isHalted: boolean
-  timestamp: number
+  isHalted: boolean;
+  timestamp: number;
 }
 
 export interface ShortSaleRestrictionStatus {
-  detail: string
-  isSSR: boolean
-  timestamp: number
+  detail: string;
+  isSSR: boolean;
+  timestamp: number;
 }
 
 /**
@@ -141,39 +141,39 @@ export enum SECURITY_EVENTS {
 }
 
 export interface SecurityEvent {
-  securityEvent: SECURITY_EVENTS
-  timestamp: number
+  securityEvent: SECURITY_EVENTS;
+  timestamp: number;
 }
 
 export interface Earnings {
-  actualEPS: number
-  consensusEPS: number
-  estimatedEPS: number
-  announceTime: string
-  numberOfEstimates: number
-  EPSSurpriseDollar: number
-  EPSReportDate: string
-  fiscalPeriod: string
-  fiscalEndDate: string
-  yearAgo: number
-  yearAgoChangePercent: number
-  estimatedChangePercent: number
-  symbolId: string
-  symbol: string
-  quote: QuoteResponse
-  headline: string
+  actualEPS: number;
+  consensusEPS: number;
+  estimatedEPS: number;
+  announceTime: string;
+  numberOfEstimates: number;
+  EPSSurpriseDollar: number;
+  EPSReportDate: string;
+  fiscalPeriod: string;
+  fiscalEndDate: string;
+  yearAgo: number;
+  yearAgoChangePercent: number;
+  estimatedChangePercent: number;
+  symbolId: string;
+  symbol: string;
+  quote: QuoteResponse;
+  headline: string;
 }
 
 export interface TradeBreak {
-  isISO: boolean
-  isOddLot: boolean
-  isOutsideRegularHours: boolean
-  isSinglePriceCross: boolean
-  isTradeThroughExempt: boolean
-  price: number
-  size: number
-  timestamp: number
-  tradeId: number
+  isISO: boolean;
+  isOddLot: boolean;
+  isOutsideRegularHours: boolean;
+  isSinglePriceCross: boolean;
+  isTradeThroughExempt: boolean;
+  price: number;
+  size: number;
+  timestamp: number;
+  tradeId: number;
 }
 
 /**
@@ -188,18 +188,18 @@ export enum AUCTION_TYPES {
 }
 
 export interface Auction {
-  auctionType: AUCTION_TYPES
-  pairedShares: number
-  imbalanceShares: number
-  referencePrice: number
-  indicativePrice: number
-  auctionBookPrice: number
-  collarReferencePrice: number
-  lowerCollarPrice: number
-  upperCollarPrice: number
-  extensionNumber: number
-  startTime: string
-  lastUpdate: number
+  auctionType: AUCTION_TYPES;
+  pairedShares: number;
+  imbalanceShares: number;
+  referencePrice: number;
+  indicativePrice: number;
+  auctionBookPrice: number;
+  collarReferencePrice: number;
+  lowerCollarPrice: number;
+  upperCollarPrice: number;
+  extensionNumber: number;
+  startTime: string;
+  lastUpdate: number;
 }
 
 /**
@@ -211,14 +211,14 @@ export enum OFFICIAL_PRICE_TYPES {
 }
 
 export interface OfficialPrice {
-  price: number
-  priceType: OFFICIAL_PRICE_TYPES
-  timestamp: number
+  price: number;
+  priceType: OFFICIAL_PRICE_TYPES;
+  timestamp: number;
 }
 
 export interface DeepSocketResponse {
-  symbol: string
-  messageType: DEEP_CHANNELS
+  symbol: string;
+  messageType: DEEP_CHANNELS;
   data:
     | Book
     | Trade
@@ -228,35 +228,35 @@ export interface DeepSocketResponse {
     | SecurityEvent
     | TradeBreak
     | Auction
-    | OfficialPrice
+    | OfficialPrice;
 }
 
 export interface DeepResponse extends Book {
-  symbol: string
-  marketPercent: number
-  volume: number
-  lastSalePrice: number
-  lastSaleSize: number
-  lastSaleTime: number
-  lastUpdated: number
-  systemEvent: SystemEvent
-  tradingStatus: TradingStatus
-  opHaltStatus: OperationalHaltStatus
-  ssrStatus: ShortSaleRestrictionStatus
-  securityEvent: SecurityEvent
-  trades: Trade[]
-  tradeBreaks: TradeBreak[]
-  auction: Auction
+  symbol: string;
+  marketPercent: number;
+  volume: number;
+  lastSalePrice: number;
+  lastSaleSize: number;
+  lastSaleTime: number;
+  lastUpdated: number;
+  systemEvent: SystemEvent;
+  tradingStatus: TradingStatus;
+  opHaltStatus: OperationalHaltStatus;
+  ssrStatus: ShortSaleRestrictionStatus;
+  securityEvent: SecurityEvent;
+  trades: Trade[];
+  tradeBreaks: TradeBreak[];
+  auction: Auction;
 }
 
 export interface MarketEarningsResponse {
-  bto: Earnings[]
-  amc: Earnings[]
+  bto: Earnings[];
+  amc: Earnings[];
 }
 
 export interface SectorPerformanceResponse {
-  type: string
-  name: string
-  performance: number
-  lastUpdated: number
+  type: string;
+  name: string;
+  performance: number;
+  lastUpdated: number;
 }

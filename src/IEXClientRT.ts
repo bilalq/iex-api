@@ -2,28 +2,28 @@
 
 // tslint:disable: completed-docs
 
-import { merge, Observable, Observer } from 'rxjs'
-import * as socketIO from 'socket.io-client'
+import { merge, Observable, Observer } from 'rxjs';
+import * as socketIO from 'socket.io-client';
 
-import { RealtimeQuoteResponse } from './apis/stocks'
+import { RealtimeQuoteResponse } from './apis/stocks';
 
 interface SubscriptionEntry {
-  readonly observable: Observable<RealtimeQuoteResponse>
+  readonly observable: Observable<RealtimeQuoteResponse>;
 
-  next(value: RealtimeQuoteResponse): any
+  next(value: RealtimeQuoteResponse): any;
 
-  complete(): any
-  readonly count: number
+  complete(): any;
+  readonly count: number;
 }
 
 interface Subscriptions {
-  [topic: string]: SubscriptionEntry | undefined
+  [topic: string]: SubscriptionEntry | undefined;
 }
 
 interface EntryHandler {
-  onEmpty(): any
+  onEmpty(): any;
 
-  onResumend(): any
+  onResumend(): any;
 }
 
 /**
@@ -34,52 +34,52 @@ interface EntryHandler {
  */
 const createEntry = (handler: EntryHandler) => {
   // tslint:disable-next-line: prefer-array-literal
-  const observers: Array<Observer<RealtimeQuoteResponse>> = []
+  const observers: Array<Observer<RealtimeQuoteResponse>> = [];
   const observable = Observable.create(
     (observer: Observer<RealtimeQuoteResponse>) => {
-      observers.push(observer)
+      observers.push(observer);
       if (observers.length === 1) {
-        handler.onResumend()
+        handler.onResumend();
       }
 
       return () => {
-        const ix = observers.findIndex(candidate => observer === candidate)
+        const ix = observers.findIndex(candidate => observer === candidate);
 
         if (ix >= 0) {
-          observers.splice(ix, 1)
+          observers.splice(ix, 1);
 
           if (observers.length === 0) {
-            handler.onEmpty()
+            handler.onEmpty();
           }
         }
-      }
+      };
     }
-  )
+  );
 
   return {
     observable,
     next(value: RealtimeQuoteResponse) {
       observers.forEach(o => {
-        o.next(value)
-      })
+        o.next(value);
+      });
     },
     complete() {
       observers.forEach(o => {
-        o.complete()
-      })
-      observers.splice(0, observers.length)
+        o.complete();
+      });
+      observers.splice(0, observers.length);
     },
     get count() {
-      return observers.length
+      return observers.length;
     }
-  }
-}
+  };
+};
 
-const endpoint = 'https://ws-api.iextrading.com/1.0/tops'
+const endpoint = 'https://ws-api.iextrading.com/1.0/tops';
 
-export type SocketIOBuilder = (endpoint: string) => SocketIOClient.Socket
+export type SocketIOBuilder = (endpoint: string) => SocketIOClient.Socket;
 
-const socketIOConnect = (host: string) => socketIO.connect(host)
+const socketIOConnect = (host: string) => socketIO.connect(host);
 
 /**
  * Client for observing realtime data streams
@@ -92,30 +92,30 @@ const socketIOConnect = (host: string) => socketIO.connect(host)
  * @class IEXClientRT
  */
 export default class IEXClientRT {
-  private isReady: boolean
+  private isReady: boolean;
 
-  private readonly socket: SocketIOClient.Socket
+  private readonly socket: SocketIOClient.Socket;
 
-  private readonly subscriptions: Subscriptions
+  private readonly subscriptions: Subscriptions;
 
   public constructor(socketBuilder?: SocketIOBuilder) {
     /*tslint:disable:no-unsafe-any */
-    this.onConnect = this.onConnect.bind(this)
-    this.onMessage = this.onMessage.bind(this)
-    this.subscribePending = this.subscribePending.bind(this)
-    this.subscribeIfReady = this.subscribeIfReady.bind(this)
-    this.getOrCreateObservable = this.getOrCreateObservable.bind(this)
-    this.observe = this.observe.bind(this)
+    this.onConnect = this.onConnect.bind(this);
+    this.onMessage = this.onMessage.bind(this);
+    this.subscribePending = this.subscribePending.bind(this);
+    this.subscribeIfReady = this.subscribeIfReady.bind(this);
+    this.getOrCreateObservable = this.getOrCreateObservable.bind(this);
+    this.observe = this.observe.bind(this);
     /*tslint:enable:no-unsafe-any */
 
-    this.isReady = false
-    this.subscriptions = {}
+    this.isReady = false;
+    this.subscriptions = {};
     const createSocket =
-      socketBuilder !== undefined ? socketBuilder : socketIOConnect
-    this.socket = createSocket(endpoint)
+      socketBuilder !== undefined ? socketBuilder : socketIOConnect;
+    this.socket = createSocket(endpoint);
     /*tslint:disable:no-unbound-method*/
-    this.socket.on('connect', this.onConnect)
-    this.socket.on('message', this.onMessage)
+    this.socket.on('connect', this.onConnect);
+    this.socket.on('message', this.onMessage);
     /*tslint:enable:no-unbound-method*/
   }
 
@@ -124,11 +124,11 @@ export default class IEXClientRT {
    * @param rawMessage The message from iex as a JSON string
    */
   private onMessage(rawMessage: string) {
-    const message = JSON.parse(rawMessage) as RealtimeQuoteResponse
-    const topic = message.symbol
-    const entry = this.subscriptions[topic]
+    const message = JSON.parse(rawMessage) as RealtimeQuoteResponse;
+    const topic = message.symbol;
+    const entry = this.subscriptions[topic];
     if (entry) {
-      entry.next(message)
+      entry.next(message);
     }
   }
 
@@ -138,8 +138,8 @@ export default class IEXClientRT {
    * currently subscribed to an IEX feed.
    */
   private onConnect() {
-    this.isReady = true
-    this.subscribePending()
+    this.isReady = true;
+    this.subscribePending();
   }
 
   /**
@@ -148,12 +148,12 @@ export default class IEXClientRT {
    */
   private subscribePending() {
     const pending = Object.keys(this.subscriptions).filter(key => {
-      const subscription = this.subscriptions[key]
-      return subscription && subscription.count > 0
-    })
+      const subscription = this.subscriptions[key];
+      return subscription && subscription.count > 0;
+    });
 
     if (pending.length > 0) {
-      this.socket.emit('subscribe', pending.join())
+      this.socket.emit('subscribe', pending.join());
     }
   }
 
@@ -164,10 +164,10 @@ export default class IEXClientRT {
    */
   private subscribeIfReady(topic: string) {
     if (!this.isReady) {
-      return
+      return;
     }
 
-    this.socket.emit('subscribe', topic)
+    this.socket.emit('subscribe', topic);
   }
 
   /**
@@ -179,23 +179,23 @@ export default class IEXClientRT {
   private getOrCreateObservable(
     unnormalizedTopic: string
   ): Observable<RealtimeQuoteResponse> {
-    const topic = unnormalizedTopic.toUpperCase()
-    let observable = this.subscriptions[topic]
+    const topic = unnormalizedTopic.toUpperCase();
+    let observable = this.subscriptions[topic];
     const onEmpty = () => {
-      this.socket.emit('unsubscribe', topic)
-    }
+      this.socket.emit('unsubscribe', topic);
+    };
     const onResumend = () => {
-      this.subscribeIfReady(topic)
-    }
+      this.subscribeIfReady(topic);
+    };
 
     if (!observable) {
       this.subscriptions[topic] = observable = createEntry({
         onEmpty,
         onResumend
-      })
+      });
     }
 
-    return observable.observable
+    return observable.observable;
   }
 
   /**
@@ -204,6 +204,6 @@ export default class IEXClientRT {
    * @param topics The securities one wishes to subscribe
    */
   public observe(...topics: string[]): Observable<RealtimeQuoteResponse> {
-    return merge(...topics.map(t => this.getOrCreateObservable(t)))
+    return merge(...topics.map(t => this.getOrCreateObservable(t)));
   }
 }

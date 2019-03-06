@@ -1,17 +1,17 @@
 /** @format */
 
-import * as MarketDataAPI from './apis/marketData'
-import * as ReferenceDataAPI from './apis/referenceData'
-import * as StocksAPI from './apis/stocks'
+import * as MarketDataAPI from './apis/marketData';
+import * as ReferenceDataAPI from './apis/referenceData';
+import * as StocksAPI from './apis/stocks';
 
 const toQueryList = (values: string[]): string =>
-  values.map(encodeURIComponent).join(',')
+  values.map(encodeURIComponent).join(',');
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
   Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-    .join('&')
+    .join('&');
 // tslint:enable:no-unsafe-any
 
 /**
@@ -19,8 +19,8 @@ const toParams = (params: any): string =>
  * way. It is usable in Browser, React Native, and NodeJS contexts.
  */
 export class IEXClient {
-  private readonly fetchFunction: typeof fetch
-  private readonly httpsEndpoint: string
+  private readonly fetchFunction: typeof fetch;
+  private readonly httpsEndpoint: string;
 
   /**
    * @param fetchFunction A function that is API compatible with the browser
@@ -35,9 +35,9 @@ export class IEXClient {
     fetchFunction: typeof fetch,
     httpsEndpoint = 'https://api.iextrading.com/1.0'
   ) {
-    this.fetchFunction = fetchFunction
-    this.httpsEndpoint = httpsEndpoint
-    this.request = this.request.bind(this) // tslint:disable-line:no-unsafe-any
+    this.fetchFunction = fetchFunction;
+    this.httpsEndpoint = httpsEndpoint;
+    this.request = this.request.bind(this); // tslint:disable-line:no-unsafe-any
   }
 
   /**
@@ -55,15 +55,15 @@ export class IEXClient {
    */
   public request(path: string): Promise<any> {
     return this.fetchFunction(`${this.httpsEndpoint}/${path}`).then(res => {
-      const contentType = res.headers.get('content-type')
+      const contentType = res.headers.get('content-type');
       if (contentType === null) {
-        return null
+        return null;
       }
       if (contentType.includes('application/json')) {
-        return res.json()
+        return res.json();
       }
-      return res.text()
-    })
+      return res.text();
+    });
   }
 
   /**
@@ -72,7 +72,7 @@ export class IEXClient {
    * @see https://iextrading.com/developer/docs/#symbols
    */
   public symbols(): Promise<ReferenceDataAPI.StockSymbol[]> {
-    return this.request('/ref-data/symbols')
+    return this.request('/ref-data/symbols');
   }
 
   /**
@@ -93,21 +93,21 @@ export class IEXClient {
     symbols: string[],
     params?: {}
   ): Promise<any> {
-    const paramSuffix = params ? toParams(params) : ''
+    const paramSuffix = params ? toParams(params) : '';
 
     if (typeof types === 'string') {
       return this.request(
         `/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(
           symbols
         )}${paramSuffix}`
-      )
+      );
     }
 
     return this.request(
       `/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(
         symbols
       )}${paramSuffix}`
-    )
+    );
   }
 
   /**
@@ -121,10 +121,10 @@ export class IEXClient {
     stockSymbol: string,
     displayPercent?: boolean
   ): Promise<StocksAPI.QuoteResponse> {
-    const queryString = displayPercent ? '?displayPercent=true' : ''
+    const queryString = displayPercent ? '?displayPercent=true' : '';
     return this.request(
       `/stock/${encodeURIComponent(stockSymbol)}/quote${queryString}`
-    )
+    );
   }
 
   /**
@@ -139,12 +139,12 @@ export class IEXClient {
     range: StocksAPI.ChartRangeOption,
     params?: StocksAPI.ChartParams
   ): Promise<StocksAPI.ChartResponse> {
-    const urlSuffix = params ? `?${toParams(params)}` : ''
+    const urlSuffix = params ? `?${toParams(params)}` : '';
     return this.request(
       `/stock/${encodeURIComponent(stockSymbol)}/chart/${encodeURIComponent(
         range
       )}${urlSuffix}`
-    )
+    );
   }
 
   /**
@@ -156,7 +156,7 @@ export class IEXClient {
   public stockOpenClose(
     stockSymbol: string
   ): Promise<StocksAPI.OpenCloseResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/open-close`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/open-close`);
   }
 
   /**
@@ -169,7 +169,7 @@ export class IEXClient {
   public stockPrevious(
     stockSymbol: string
   ): Promise<StocksAPI.PreviousResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/previous`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/previous`);
   }
 
   /**
@@ -179,7 +179,7 @@ export class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockCompany(stockSymbol: string): Promise<StocksAPI.CompanyResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/company`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/company`);
   }
 
   /**
@@ -191,7 +191,7 @@ export class IEXClient {
   public stockKeyStats(
     stockSymbol: string
   ): Promise<StocksAPI.KeyStatsResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/stats`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/stats`);
   }
 
   /**
@@ -201,7 +201,7 @@ export class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockPeers(stockSymbol: string): Promise<string[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/peers`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/peers`);
   }
 
   /**
@@ -216,7 +216,7 @@ export class IEXClient {
   public stockRelevant(
     stockSymbol: string
   ): Promise<StocksAPI.RelevantResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/relevant`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/relevant`);
   }
 
   /**
@@ -234,9 +234,9 @@ export class IEXClient {
     if (range) {
       return this.request(
         `/stock/${encodeURIComponent(stockSymbol)}/news/last/${range}`
-      )
+      );
     }
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news`);
   }
 
   /**
@@ -248,7 +248,7 @@ export class IEXClient {
   public stockFinancials(
     stockSymbol: string
   ): Promise<StocksAPI.FinancialsResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials`);
   }
 
   /**
@@ -260,7 +260,7 @@ export class IEXClient {
   public stockEarnings(
     stockSymbol: string
   ): Promise<StocksAPI.EarningsResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/earnings`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/earnings`);
   }
 
   /**
@@ -276,7 +276,7 @@ export class IEXClient {
   ): Promise<StocksAPI.Dividend[]> {
     return this.request(
       `/stock/${encodeURIComponent(stockSymbol)}/dividends/${range}`
-    )
+    );
   }
 
   /**
@@ -292,7 +292,7 @@ export class IEXClient {
   ): Promise<StocksAPI.Split[]> {
     return this.request(
       `/stock/${encodeURIComponent(stockSymbol)}/splits/${range}`
-    )
+    );
   }
 
   /**
@@ -302,7 +302,7 @@ export class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockLogo(stockSymbol: string): Promise<StocksAPI.LogoResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/logo`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/logo`);
   }
 
   /**
@@ -314,7 +314,7 @@ export class IEXClient {
    *  delayed market price, or the previous close price, is returned.
    */
   public stockPrice(stockSymbol: string): Promise<number> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price`);
   }
 
   /**
@@ -324,7 +324,7 @@ export class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockDelayedQuote(stockSymbol: string): Promise<number> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price`);
   }
 
   /**
@@ -338,8 +338,8 @@ export class IEXClient {
     list: StocksAPI.MarketList,
     displayPercent?: boolean
   ): Promise<StocksAPI.QuoteResponse[]> {
-    const queryString = displayPercent ? '?displayPercent=true' : ''
-    return this.request(`/stock/market/list/${list}${queryString}`)
+    const queryString = displayPercent ? '?displayPercent=true' : '';
+    return this.request(`/stock/market/list/${list}${queryString}`);
   }
 
   /**
@@ -357,7 +357,7 @@ export class IEXClient {
   ): Promise<StocksAPI.EffectiveSpread[]> {
     return this.request(
       `/stock/${encodeURIComponent(stockSymbol)}/effective-spread`
-    )
+    );
   }
 
   /**
@@ -373,35 +373,35 @@ export class IEXClient {
   ): Promise<StocksAPI.VolumeByVenue[]> {
     return this.request(
       `/stock/${encodeURIComponent(stockSymbol)}/volume-by-venue`
-    )
+    );
   }
 
   /**
    * Retrieves latest TOPS data for specified symbol
    */
   public tops(stockSymbol: string): Promise<MarketDataAPI.TopsResponse[]> {
-    return this.request(`tops?symbols=${encodeURIComponent(stockSymbol)}`)
+    return this.request(`tops?symbols=${encodeURIComponent(stockSymbol)}`);
   }
 
   /**
    * Retrieves latest DEEP data for specified symbol
    */
   public deep(stockSymbol: string): Promise<MarketDataAPI.DeepResponse> {
-    return this.request(`deep?symbols=${encodeURIComponent(stockSymbol)}`)
+    return this.request(`deep?symbols=${encodeURIComponent(stockSymbol)}`);
   }
 
   /**
    * Retrieves latest System Event
    */
   public deepSystemEvent(): Promise<MarketDataAPI.SystemEvent> {
-    return this.request('deep/system-event')
+    return this.request('deep/system-event');
   }
 
   /**
    * Retrieves market earnings for the current day
    */
   public marketEarnings(): Promise<MarketDataAPI.MarketEarningsResponse> {
-    return this.request('/stock/market/today-earnings')
+    return this.request('/stock/market/today-earnings');
   }
 
   /**
@@ -410,7 +410,7 @@ export class IEXClient {
   public sectorPerformance(): Promise<
     MarketDataAPI.SectorPerformanceResponse[]
   > {
-    return this.request('/stock/market/sector-performance')
+    return this.request('/stock/market/sector-performance');
   }
   // TODO: integrate channel specific DEEP endpoints
 }
