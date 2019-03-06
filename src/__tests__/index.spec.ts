@@ -1,3 +1,4 @@
+/* tslint:disable:newline-per-chained-call */
 import attribution from '../attribution'
 import IEXClient from '../client'
 import { Attribution as indexAttribution, IEXClient as indexClient } from '../index'

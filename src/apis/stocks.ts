@@ -341,3 +341,32 @@ date: string | null
 marketPercent: number
 avgMarketPercent: number
 }
+
+/**
+ * Response type when fetching realtime data
+ * for stocks.
+ */
+<<<<<<< HEAD
+<<<<<<< HEAD
+export type RealtimeQuoteResponse = {
+=======
+export interface RealtimeQuoteResponse {
+>>>>>>> 20df792e63fbaad187d7de1f42b7fc4a6abb73df
+=======
+export type RealtimeQuoteResponse = {
+>>>>>>> tdip
+  readonly symbol: string,
+  readonly sector: string,
+  readonly securityType: string,
+  readonly bidPrice: number,
+  readonly bidSize: number,
+  readonly askPrice: number,
+  readonly askSize: number,
+  readonly lastUpdated: number,
+  readonly lastSalePrice: number,
+  readonly lastSaleSize: number,
+  readonly lastSaleITime: number,
+  readonly volume: number,
+  readonly marketPercent: number,
+  readonly seq: number
+}
