@@ -1,13 +1,5 @@
-/**
- * /* tslint:disable:newline-per-chained-call
- *
- * @format
- */
+/** @format */
 
-/* tslint:disable:no-magic-numbers */
-/* tslint:disable:no-var-requires */
-/* tslint:disable:no-require-imports */
-/* tslint:disable:no-implicit-dependencies */
 // tslint:disable: completed-docs
 
 import client from '../client'
