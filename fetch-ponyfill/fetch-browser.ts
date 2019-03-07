@@ -23,18 +23,21 @@
  * @see https://github.com/qubyte/fetch-ponyfill
  *
  * @format
+ *
+ *
  */
+// tslint:disable: completed-docs
 
-(function (self) {
+((self: any) => {
   'use strict';
 
-  function fetchPonyfill(options) {
+  function fetchPonyfill(options: any) {
     const Promise = (options && options.Promise) || self.Promise;
     const XMLHttpRequest =
       (options && options.XMLHttpRequest) || self.XMLHttpRequest;
     const global = self;
 
-    return (function () {
+    return (() => {
       const self = Object.create(global, {
         fetch: {
           value: undefined,
@@ -53,6 +56,8 @@
     })();
   }
 
+  if (define! !== undefined) {
+  }
   if (typeof define === 'function' && define.amd) {
     define(function () {
       return fetchPonyfill;

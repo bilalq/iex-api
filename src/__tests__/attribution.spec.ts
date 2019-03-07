@@ -4,7 +4,7 @@
  * @format
  */
 
-import attribution from '../attribution';
+import { attribution } from '../attribution';
 
 describe('attribution', () => {
   it('has IEX citations and links', () => {

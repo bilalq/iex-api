@@ -25,29 +25,32 @@
  * @format
  */
 
-function indent(line) {
+function indent(line: any) {
   // tslint:disable-next-line: prefer-template
   return line === '' ? '' : '      ' + line;
 }
 
-let fs = require('fs');
+import fs from 'fs';
 
 // Get the fetch source as a string.
-let whatwgFetchSource = fs.readFileSync(
+const whatwgFetchSource = fs.readFileSync(
   require.resolve('whatwg-fetch'),
   'utf8'
 );
 
 // Get the wrapper source as a string.
-let wrapperSource = fs.readFileSync(require.resolve('./fetch-browser'), 'utf8');
+const wrapperSource = fs.readFileSync(
+  require.resolve('./fetch-browser'),
+  'utf8'
+);
 
 // Indent and place the fetch source inside the wrapper.
-let indented = whatwgFetchSource
+const indented = whatwgFetchSource
   .split('\n')
   .map(indent)
   .join('\n');
 
-let builtSource = wrapperSource.replace('      // {{whatwgFetch}}', indented);
+const builtSource = wrapperSource.replace('      // {{whatwgFetch}}', indented);
 
 console.log(builtSource); // eslint-disable-line no-console
 
@@ -109,7 +112,8 @@ console.log(builtSource); // eslint-disable-line no-console
 
 // WHATWG fetch ponyfill
 
-// This module wraps the github/fetch polyfill in a CommonJS module for browserification, and avoids appending anything to the window, instead returning a setup function when fetch-ponyfill is required. Inspired by object-assign.
+// This module wraps the github/fetch polyfill in a CommonJS module for browserification, and avoids
+//  appending anything to the window, instead returning a setup function when fetch-ponyfill is required. Inspired by object-assign.
 
 // When used in Node, delegates to node-fetch instead.
 
@@ -124,4 +128,5 @@ console.log(builtSource); // eslint-disable-line no-console
 
 // option	description
 // Promise	An A+ Promise implementation. Defaults to window.Promise in the browser, and global.Promise in Node.
-// XMLHttpRequest	The XMLHttpRequest constructor. This is useful to feed in when working with Firefox OS. Defaults to window.XMLHttpRequest. Has no effect in Node."
+// XMLHttpRequest	The XMLHttpRequest constructor. This is useful to feed in when working with Firefox OS. Defaults
+//  to window.XMLHttpRequest. Has no effect in Node."

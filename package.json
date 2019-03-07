@@ -1,7 +1,7 @@
 {
-  "name": "iex-api",
+  "name": "iex-luxcium-api",
   "version": "0.0.4",
-  "description": "Unofficial SDK for using the IEX API.",
+  "description": "Unofficial SDK for using the IEX API by Luxcium.",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -28,12 +28,35 @@
     "api",
     "sdk"
   ],
-  "author": "Bilal Quadri",
+  "author": "Benjamin Vincent",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bilalq/iex-api/issues"
+    "url": "https://github.com/luxcium/iex-api/issues"
   },
-  "homepage": "https://github.com/bilalq/iex-api#readme",
+  "homepage": "https://github.com/luxcium/iex-api#readme",
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/apis/**/*.ts"
+    ],
+    "coverageDirectory": "build/coverage",
+    "mapCoverage": true,
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testPathIgnorePatterns": [
+      "/node_modules|build/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  },
   "dependencies": {
     "@types/inquirer": "0.0.44",
     "@types/node-fetch": "^2.1.6",
@@ -57,28 +80,5 @@
     "jest": "^24.1.0",
     "ts-jest": "^24.0.0",
     "tslint": "^5.8.0"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.ts",
-      "!src/apis/**/*.ts"
-    ],
-    "coverageDirectory": "build/coverage",
-    "mapCoverage": true,
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "testPathIgnorePatterns": [
-      "/node_modules|build/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
   }
 }
