@@ -91,10 +91,10 @@ export default class IEXClient {
     const paramSuffix = params ? toParams(params) : ''
 
     if (typeof types === 'string') {
-      return this.request(`/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(symbols)}${paramSuffix}`)
+      return this.request(`/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(symbols)}&${paramSuffix}`)
     }
 
-    return this.request(`/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(symbols)}${paramSuffix}`)
+    return this.request(`/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(symbols)}&${paramSuffix}`)
   }
 
   /**
