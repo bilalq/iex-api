@@ -41,7 +41,6 @@
       "!src/apis/**/*.ts"
     ],
     "coverageDirectory": "build/coverage",
-    "mapCoverage": true,
     "moduleFileExtensions": [
       "ts",
       "tsx",
