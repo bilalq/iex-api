@@ -1,6 +1,6 @@
 {
   "name": "iex-luxcium-api",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Unofficial SDK for using the IEX API by Luxcium.",
   "main": "index.js",
   "types": "index.d.ts",
