@@ -1,79 +1,81 @@
 /** @format */
 
-import { DeepService } from '../deep';
-import {
-  Socket,
-  SocketClientCreator,
-  WEBSOCKET_BASE_URL
-} from '../websocketClient';
+// /** @format */
 
-const rawSystemEvent = '{"systemEvent":"R","timestamp":1529587800001}';
+// import { DeepService } from '../deep';
+// import {
+//   Socket,
+//   SocketClientCreator,
+//   WEBSOCKET_BASE_URL
+// } from '../websocketClient';
 
-const rawDeepResponse =
-  '{"symbol":"SPOT","messageType":"book",' +
-  '"data":{"bids":[{"price":179.8,"size":200,"timestamp":1529592055425},{"price":175.27,"size":100,"timestamp":1529591809748}],' +
-  '"asks":[{"price":182.45,"size":100,"timestamp":1529585641644},{"price":184.31,"size":100,"timestamp":1529591761561}]},"seq":440}';
+// // const rawSystemEvent = '{"systemEvent":"R","timestamp":1529587800001}';
 
-let on;
-let onMessage: (message: string) => void = () => {
-  // fail('this should be overridden in a test');
-};
-let socket: Socket;
-let socketClientCreator: SocketClientCreator;
-let deepService: DeepService;
+// // const rawDeepResponse =
+// // '{"symbol":"SPOT","messageType":"book",' +
+// // '"data":{"bids":[{"price":179.8,"size":200,"timestamp":1529592055425},{"price":175.27,"size":100,"timestamp":1529591809748}],' +
+// // '"asks":[{"price":182.45,"size":100,"timestamp":1529585641644},{"price":184.31,"size":100,"timestamp":1529591761561}]},"seq":440}';
 
-describe('while connected', () => {
-  beforeEach(() => {
-    on = jest
-      .fn()
-      .mockImplementationOnce((event, callback: (message: string) => void) => {
-        expect(event).toBe('message');
-        onMessage = callback;
-      })
-      .mockImplementationOnce((event, callback: () => void) => {
-        expect(event).toBe('connect');
-        callback();
-      });
-    socket = {
-      on,
-      connected: true,
-      disconnected: false,
-      emit: jest.fn()
-    };
-    socketClientCreator = () => socket;
-    deepService = new DeepService(socketClientCreator, {}, WEBSOCKET_BASE_URL);
-  });
+// let on;
+// let onMessage: (message: string) => void = () => {
+// // fail('this should be overridden in a test');
+// };
+// let socket: Socket;
+// let socketClientCreator: SocketClientCreator;
+// // let deepService: DeepService;
 
-  // test('add/remove listeners', () => {
-  //   const onDeepUpdate = jest.fn();
-  //   const onSystemUpdate = jest.fn();
+// describe('while connected', () => {
+//   beforeEach(() => {
+//     on = jest
+//       .fn()
+//       .mockImplementationOnce((event, callback: (message: string) => void) => {
+//         expect(event).toBe('message');
+//         onMessage = callback;
+//       })
+//       .mockImplementationOnce((event, callback: () => void) => {
+//         expect(event).toBe('connect');
+//         callback();
+//       });
+//     socket = {
+//       on,
+//       connected: true,
+//       disconnected: false,
+//       emit: jest.fn()
+//     };
+//     socketClientCreator = () => socket;
+//     deepService = new DeepService(socketClientCreator, {}, WEBSOCKET_BASE_URL);
+//   });
 
-  //   deepService.addDeepListener(onDeepUpdate);
-  //   deepService.addSystemEventListener(onSystemUpdate);
+//   // test('add/remove listeners', () => {
+//   //   const onDeepUpdate = jest.fn();
+//   //   const onSystemUpdate = jest.fn();
 
-  //   onMessage(rawDeepResponse);
+//   //   deepService.addDeepListener(onDeepUpdate);
+//   //   deepService.addSystemEventListener(onSystemUpdate);
 
-  //   expect(onDeepUpdate).toHaveBeenCalled();
-  //   expect(onSystemUpdate).not.toHaveBeenCalled();
+//   //   onMessage(rawDeepResponse);
 
-  //   onDeepUpdate.mockClear();
-  //   onSystemUpdate.mockClear();
+//   //   expect(onDeepUpdate).toHaveBeenCalled();
+//   //   expect(onSystemUpdate).not.toHaveBeenCalled();
 
-  //   onMessage(rawSystemEvent);
+//   //   onDeepUpdate.mockClear();
+//   //   onSystemUpdate.mockClear();
 
-  //   expect(onDeepUpdate).not.toHaveBeenCalled();
-  //   expect(onSystemUpdate).toHaveBeenCalled();
+//   //   onMessage(rawSystemEvent);
 
-  //   onDeepUpdate.mockClear();
-  //   onSystemUpdate.mockClear();
+//   //   expect(onDeepUpdate).not.toHaveBeenCalled();
+//   //   expect(onSystemUpdate).toHaveBeenCalled();
 
-  //   deepService.removeDeepListener(onDeepUpdate);
-  //   deepService.removeSystemEventListener(onSystemUpdate);
+//   //   onDeepUpdate.mockClear();
+//   //   onSystemUpdate.mockClear();
 
-  //   onMessage(rawDeepResponse);
-  //   onMessage(rawSystemEvent);
+//   //   deepService.removeDeepListener(onDeepUpdate);
+//   //   deepService.removeSystemEventListener(onSystemUpdate);
 
-  //   expect(onDeepUpdate).not.toHaveBeenCalled();
-  //   expect(onSystemUpdate).not.toHaveBeenCalled();
-  // });
-});
+//   //   onMessage(rawDeepResponse);
+//   //   onMessage(rawSystemEvent);
+
+//   //   expect(onDeepUpdate).not.toHaveBeenCalled();
+//   //   expect(onSystemUpdate).not.toHaveBeenCalled();
+//   // });
+// });
