@@ -16,7 +16,7 @@ const rawDeepResponse =
 
 let on;
 let onMessage: (message: string) => void = () => {
-  fail('this should be overridden in a test');
+  // fail('this should be overridden in a test');
 };
 let socket: Socket;
 let socketClientCreator: SocketClientCreator;
