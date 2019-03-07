@@ -37,7 +37,7 @@
     "emitDecoratorMetadata": true
   },
 
-  "exclude": ["node_modules", "build", "demo"],
+  "exclude": ["node_modules", "build", "demo", "fetch-ponyfill"],
   "plugins": [
     {
       "name": "typescript-tslint-plugin",
