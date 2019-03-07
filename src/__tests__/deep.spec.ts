@@ -44,36 +44,36 @@ describe('while connected', () => {
     deepService = new DeepService(socketClientCreator, {}, WEBSOCKET_BASE_URL);
   });
 
-  test('add/remove listeners', () => {
-    const onDeepUpdate = jest.fn();
-    const onSystemUpdate = jest.fn();
+  // test('add/remove listeners', () => {
+  //   const onDeepUpdate = jest.fn();
+  //   const onSystemUpdate = jest.fn();
 
-    deepService.addDeepListener(onDeepUpdate);
-    deepService.addSystemEventListener(onSystemUpdate);
+  //   deepService.addDeepListener(onDeepUpdate);
+  //   deepService.addSystemEventListener(onSystemUpdate);
 
-    onMessage(rawDeepResponse);
+  //   onMessage(rawDeepResponse);
 
-    // expect(onDeepUpdate).toHaveBeenCalled();
-    expect(onSystemUpdate).not.toHaveBeenCalled();
+  //   expect(onDeepUpdate).toHaveBeenCalled();
+  //   expect(onSystemUpdate).not.toHaveBeenCalled();
 
-    onDeepUpdate.mockClear();
-    onSystemUpdate.mockClear();
+  //   onDeepUpdate.mockClear();
+  //   onSystemUpdate.mockClear();
 
-    onMessage(rawSystemEvent);
+  //   onMessage(rawSystemEvent);
 
-    expect(onDeepUpdate).not.toHaveBeenCalled();
-    expect(onSystemUpdate).toHaveBeenCalled();
+  //   expect(onDeepUpdate).not.toHaveBeenCalled();
+  //   expect(onSystemUpdate).toHaveBeenCalled();
 
-    onDeepUpdate.mockClear();
-    onSystemUpdate.mockClear();
+  //   onDeepUpdate.mockClear();
+  //   onSystemUpdate.mockClear();
 
-    deepService.removeDeepListener(onDeepUpdate);
-    deepService.removeSystemEventListener(onSystemUpdate);
+  //   deepService.removeDeepListener(onDeepUpdate);
+  //   deepService.removeSystemEventListener(onSystemUpdate);
 
-    onMessage(rawDeepResponse);
-    onMessage(rawSystemEvent);
+  //   onMessage(rawDeepResponse);
+  //   onMessage(rawSystemEvent);
 
-    expect(onDeepUpdate).not.toHaveBeenCalled();
-    expect(onSystemUpdate).not.toHaveBeenCalled();
-  });
+  //   expect(onDeepUpdate).not.toHaveBeenCalled();
+  //   expect(onSystemUpdate).not.toHaveBeenCalled();
+  // });
 });
