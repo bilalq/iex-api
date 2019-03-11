@@ -288,12 +288,12 @@ export default class IEXClient {
   }
 
    /**
-   * Returns an array of quote objects for a given collection type. Currently supported collection types are sector, tag, and list
-   *
-   * @see https://iextrading.com/developer/docs/#collections
-   * @param type Type of collection
-   * @param collectionName Name of the sector, tag, or list to return and is case sensitive. 
-   */
+    * Returns an array of quote objects for a given collection type. Currently supported collection types are sector, tag, and list
+    *
+    * @see https://iextrading.com/developer/docs/#collections
+    * @param type Type of collection
+    * @param collectionName Name of the sector, tag, or list to return and is case sensitive.
+    */
   public stockMarketCollection(type: StocksAPI.Collection, collectionName: string): Promise<StocksAPI.QuoteResponse[]> {
     return this.request(`/stock/market/collection/${type}?collectionName=${collectionName}`)
   }
