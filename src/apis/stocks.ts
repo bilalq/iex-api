@@ -323,6 +323,8 @@ export interface DelayedQuoteResponse {
 
 export type MarketList = 'mostactive' | 'gainers' | 'losers' | 'iexvolume' | 'iexpercent'
 
+export type Collection = 'sector' | 'tag' | 'list'
+
 export interface EffectiveSpread {
   volume: number // TODO: API docs say this is a string, but it looks like it's a number
   venue: string
