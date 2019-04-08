@@ -208,7 +208,7 @@ export interface LogoResponse {
 
 export interface KeyStatsResponse {
   companyName: string
-  marketCap: number
+  marketcap: number
   beta: number
   week52high: number
   week52low: number
