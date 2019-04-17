@@ -207,8 +207,9 @@ export default class IEXClient {
    * @see https://iextrading.com/developer/docs/#financials
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
-  public stockFinancials(stockSymbol: string): Promise<StocksAPI.FinancialsResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials`)
+  public stockFinancials(stockSymbol: string, annual = false): Promise<StocksAPI.FinancialsResponse> {
+    const period = annual ? '?period=annual' : ''
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials/${period}`)
   }
 
   /**
