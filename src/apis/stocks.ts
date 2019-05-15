@@ -28,8 +28,6 @@ export type StockEndpoint =
 export interface QuoteResponse {
   symbol: string
   companyName: string
-  primaryExchange: string
-  sector: string
   calculationPrice: 'tops' | 'sip' | 'previousClose' | 'close'
   open: number
   openTime: number
@@ -47,6 +45,10 @@ export interface QuoteResponse {
   iexLastUpdated: number
   delayedPrice: number
   delayedPriceTime: number
+  extendedPrice: number
+  extendedChange: number
+  extendedChangePercent: number
+  extendedPriceTime: number
   previousClose: number
   change: number
   changePercent: number
@@ -58,7 +60,6 @@ export interface QuoteResponse {
   iexAskPrice: number
   iexAskSize: number
   marketCap: number
-  peRatio: number | null
   week52High: number
   week52Low: number
   ytdChange: number
@@ -134,6 +135,7 @@ export type IssueType = 'ad' | 're' | 'ce' | 'si' | 'lp' | 'cs' | 'et' | ''
 export interface CompanyResponse {
   symbol: string
   companyName: string
+  employees: number
   exchange: string
   industry: string
   website: string
@@ -141,6 +143,7 @@ export interface CompanyResponse {
   CEO: string
   issueType: IssueType
   sector: string
+  tags: string[]
 }
 
 export interface RelevantResponse {
@@ -177,12 +180,15 @@ export interface FinancialsResponse {
 }
 
 export interface News {
-  datetime: string
+  datetime: number
   headline: string
   source: string
   url: string
   summary: string
   related: string
+  image: string
+  lang: string
+  hasPaywall: boolean
 }
 
 export type NewsRange = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
@@ -209,45 +215,26 @@ export interface LogoResponse {
 export interface KeyStatsResponse {
   companyName: string
   marketcap: number
-  beta: number
   week52high: number
   week52low: number
   week52change: number
-  shortInterest: number
-  shortDate: string
-  dividendRate: number
-  dividendYield: number
-  exDividendDate: string
-  latestEPS: number
-  latestEPSDate: string
   sharesOutstanding: number
   float: number
-  returnOnEquity: number
-  consensusEPS: number
-  numberOfEstimates: number
   symbol: string
-  EBITDA: number
-  revenue: number
-  grossProfit: number
-  cash: number
-  debt: number
-  ttmEPS: number
-  revenuePerShare: number
-  revenuePerEmployee: number
-  peRatioHigh: number
-  peRatioLow: number
-  EPSSurpriseDollar: number
-  EPSSurprisePercent: number
-  returnOnAssets: number
-  returnOnCapital: number
-  profitMargin: number
-  priceToSales: number
-  priceToBook: number
+  avg10Volume: number
+  avg30Volume: number
   day200MovingAvg: number
   day50MovingAvg: number
-  institutionPercent: number
-  insiderPercent: number
-  shortRatio: number
+  employees: number
+  ttmEPS: number
+  ttmDividendRate: number
+  dividendYield: number
+  nextDividendDate: string
+  exDividendDate: string
+  nextEarningsDate: string
+  peRatio: number
+  beta: number
+  maxChangePercent: number
   year5ChangePercent: number
   year2ChangePercent: number
   year1ChangePercent: number
@@ -255,6 +242,7 @@ export interface KeyStatsResponse {
   month6ChangePercent: number
   month3ChangePercent: number
   month1ChangePercent: number
+  day30ChangePercent: number
   day5ChangePercent: number
 }
 
@@ -265,11 +253,15 @@ export interface Previous {
   high: number
   low: number
   close: number
+  uOpen: number
+  uHigh: number
+  uLow: number
+  uClose: number
   volume: number
-  unadjustedVolume: number
+  uVolume: number
   change: number
   changePercent: number
-  vwap: number
+  changeOverTime: number
 }
 
 export interface PreviousMarket {
@@ -281,18 +273,32 @@ export type PreviousResponse = Previous | PreviousMarket
 export interface Earning {
   actualEPS: number
   consensusEPS: number
-  estimatedEPS: number
   announceTime: string // TODO: API docs don't mention this, but this can probably be an enum
   numberOfEstimates: number
   EPSSurpriseDollar: number
   EPSReportDate: string
   fiscalPeriod: string
   fiscalEndDate: string
+  yearAgo: number
+  yearAgoChangePercent: number
 }
 
 export interface EarningsResponse {
   symbol: string
   earnings: Earning[]
+}
+
+export interface EarningsEstimate {
+  consensusEPS: number
+  numberOfEstimates: number
+  fiscalPeriod: string
+  fiscalEndDate: string
+  reportDate: string
+}
+
+export interface EarningsEstimateResponse {
+  symbol: string
+  estimates: EarningsEstimate[]
 }
 
 export type DividendRange = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m'

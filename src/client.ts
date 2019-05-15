@@ -195,7 +195,7 @@ export default class IEXClient {
    */
   public stockNews(stockSymbol: string, range?: StocksAPI.NewsRange): Promise<StocksAPI.News[]> {
     if (range) {
-      return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news/last/${range}`)
+      return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news?last=${range}`)
     } else {
       return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news`)
     }
@@ -206,10 +206,13 @@ export default class IEXClient {
    *
    * @see https://iextrading.com/developer/docs/#financials
    * @param stockSymbol The symbol of the stock to fetch data for.
+   * @param last The number of periods to fetch
+   * @param annual Whether to fetch annual financials, as opposed to quarterly financials
    */
-  public stockFinancials(stockSymbol: string, annual = false): Promise<StocksAPI.FinancialsResponse> {
-    const period = annual ? '?period=annual' : ''
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials/${period}`)
+  public stockFinancials(stockSymbol: string, last = 4, annual = false): Promise<StocksAPI.FinancialsResponse> {
+    const lastParam = `last=${last}`
+    const period = annual ? 'period=annual' : ''
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials?${lastParam}&${period}`)
   }
 
   /**
@@ -217,13 +220,25 @@ export default class IEXClient {
    *
    * @see https://iextrading.com/developer/docs/#earnings
    * @param stockSymbol The symbol of the stock to fetch data for.
+   * @param last The number of periods to fetch
    */
-  public stockEarnings(stockSymbol: string): Promise<StocksAPI.EarningsResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/earnings`)
+  public stockEarnings(stockSymbol: string, last = 4): Promise<StocksAPI.EarningsResponse> {
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/earnings?last=${last}`)
+  }
+
+
+  /**
+   * Gets earnings estimate data for the next reporting period
+   *
+   * @see https://iexcloud.io/docs/api/#estimates
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+  public stockEarningsEstimate(stockSymbol: string): Promise<StocksAPI.EarningsEstimateResponse> {
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/estimates`)
   }
 
   /**
-   * Gets divdends paid by the company over the given range.
+   * Gets dividends paid by the company over the given range.
    *
    * @see https://iextrading.com/developer/docs/#dividends
    * @param stockSymbol The symbol of the stock to fetch data for.
