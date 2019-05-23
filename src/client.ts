@@ -310,7 +310,7 @@ export default class IEXClient {
     * @param type Type of collection
     * @param collectionName Name of the sector, tag, or list to return and is case sensitive.
     */
-  public stockMarketCollection(type: StocksAPI.Collection, collectionName: string): Promise<StocksAPI.CollectionResponse> {
+  public stockMarketCollection(type: StocksAPI.Collection, collectionName: string): Promise<StocksAPI.QuoteResponse[]> {
     return this.request(`/stock/market/collection/${type}?collectionName=${encodeURIComponent(collectionName)}`)
   }
 
