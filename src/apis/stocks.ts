@@ -317,6 +317,12 @@ export interface Dividend {
   indicated: string // TODO: API docs don't mention this, but this can probably be an enum
 }
 
+export interface RecommendationTrendsResponse {
+  ratingBuy: number
+  ratingHold: number
+  ratingSell: number
+}
+
 export interface DelayedQuoteResponse {
   symbol: string
   delayedPrice: number
