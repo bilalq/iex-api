@@ -292,6 +292,17 @@ export default class IEXClient {
   }
 
   /**
+   * Pulls data from the last four months.
+   *
+   * @see https://iexcloud.io/docs/api/#recommendation-trends
+   * @param stockSymbol The symbol of the stock to fetch data for.
+   */
+
+  public stockRecommendationTrends(stockSymbol: string): Promise<StocksAPI.RecommendationTrendsResponse[]> {
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/recommendation-trends`)
+  }
+
+  /**
    * Get a list of quotes for the top 10 symbols in a specified list.
    *
    * @see https://iextrading.com/developer/docs/#list
