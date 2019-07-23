@@ -302,6 +302,14 @@ export default class IEXClient {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/recommendation-trends`)
   }
 
+  public stockRelated(stockSymbol: string): Promise<string[]> {
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/related`)
+  }
+
+  public stockClassification(stockSymbol: string): Promise<StocksAPI.Classification> {
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/classification`)
+  }
+
   /**
    * Get a list of quotes for the top 10 symbols in a specified list.
    *
