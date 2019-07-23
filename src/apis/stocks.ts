@@ -354,10 +354,16 @@ export interface EffectiveSpread {
 }
 
 export interface VolumeByVenue {
-volume: number
-venue: string
-venueName: string
-date: string | null
-marketPercent: number
-avgMarketPercent: number
+  volume: number
+  venue: string
+  venueName: string
+  date: string | null
+  marketPercent: number
+  avgMarketPercent: number
+}
+
+export interface Classification {
+  industry: string
+  sector: string
+  tags: string[]
 }
