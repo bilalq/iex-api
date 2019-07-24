@@ -394,4 +394,11 @@ export default class IEXClient {
     return this.request('/stock/market/sector-performance')
   }
   // TODO: integrate channel specific DEEP endpoints
+
+  /**
+   * Retrieves price target data for the stock symbol
+   */
+  public priceTarget(stockSymbol: string): Promise<MarketDataAPI.PriceTargetResponse> {
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price-target`)
+  }
 }

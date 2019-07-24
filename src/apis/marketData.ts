@@ -250,3 +250,12 @@ export interface SectorPerformanceResponse {
     performance: number
     lastUpdated: number
 }
+
+export interface PriceTargetResponse {
+    symbol: string
+    updatedDate: string
+    priceTargetAverage: number
+    priceTargetHigh: number
+    priceTargetLow: number
+    numberOfAnalysts: number
+}
