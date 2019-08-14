@@ -116,9 +116,9 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    * @param range The time range to load chart data for.
    */
-  public stockChart(stockSymbol: string, range: StocksAPI.ChartRangeOption, params?: StocksAPI.ChartParams): Promise<StocksAPI.ChartResponse> {
+  public stockChart(stockSymbol: string, params?: StocksAPI.ChartParams): Promise<StocksAPI.ChartResponse> {
     const urlSuffix = params ? `?${toParams(params)}` : ''
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/chart/${encodeURIComponent(range)}${urlSuffix}`)
+    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/chart${urlSuffix}`)
   }
 
   /**
@@ -226,7 +226,6 @@ export default class IEXClient {
     return this.request(`/stock/${encodeURIComponent(stockSymbol)}/earnings?last=${last}`)
   }
 
-
   /**
    * Gets earnings estimate data for the next reporting period
    *
@@ -322,13 +321,13 @@ export default class IEXClient {
     return this.request(`/stock/market/list/${list}${queryString}`)
   }
 
-   /**
-    * Returns an array of quote objects for a given collection type. Currently supported collection types are sector, tag, and list
-    *
-    * @see https://iextrading.com/developer/docs/#collections
-    * @param type Type of collection
-    * @param collectionName Name of the sector, tag, or list to return and is case sensitive.
-    */
+  /**
+   * Returns an array of quote objects for a given collection type. Currently supported collection types are sector, tag, and list
+   *
+   * @see https://iextrading.com/developer/docs/#collections
+   * @param type Type of collection
+   * @param collectionName Name of the sector, tag, or list to return and is case sensitive.
+   */
   public stockMarketCollection(type: StocksAPI.Collection, collectionName: string): Promise<StocksAPI.QuoteResponse[]> {
     return this.request(`/stock/market/collection/${type}?collectionName=${encodeURIComponent(collectionName)}`)
   }
