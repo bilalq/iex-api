@@ -70,7 +70,7 @@ export interface QuoteResponse {
  * There's no way to express 'date/<YYYYMMDD>' as a type outside of a generic
  * catch-all string.
  */
-export type ChartRangeOption = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m' | '1d' | 'dynamic' | string
+export type ChartRangeOption = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m' | '1d' | 'dynamic' | 'date' | string
 
 export interface ChartParams {
   chartReset?: boolean
@@ -78,34 +78,33 @@ export interface ChartParams {
   chartInterval?: number
   changeFromClose?: boolean
   chartLast?: number
+  chartCloseOnly?: boolean
+  range?: ChartRangeOption
+  chartByDay?: boolean
+  exactDate?: string
 }
 
 export interface ChartItem {
-  high: number
-  low: number
-  volume: number
-  label: number
-  changeOverTime: number
-}
-
-export interface OneDayChartItem extends ChartItem {
-  minute: string
-  average: number
-  notional: number
-  numberOfTrades: number
-}
-
-export interface MultiDayChartItem extends ChartItem {
-  date: string
-  open: number
-  close: number
-  unadjustedVolume: number
   change: number
+  changeOverTime: number
   changePercent: number
-  vwap: number
+  close: number
+  date: string
+  high: number
+  label: string
+  low: number
+  open: number
+  volume: number
 }
 
-export type ChartResponse = OneDayChartItem[] | MultiDayChartItem[]
+// Not currently supported
+export interface CloseOnlyChartItem {
+  date: string
+  close: number
+  volume: number
+}
+
+export type ChartResponse = ChartItem[]
 
 export interface OpenCloseResponse {
   open: {
@@ -199,13 +198,13 @@ export type NewsRange = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
 export type SplitRange = '5y' | '2y' | '1y' | 'ytd' | '6m' | '3m' | '1m'
 
 export interface Split {
-exDate: string
-declaredDate: string
-recordDate: string
-paymentDate: string
-ratio: number
-toFactor: number // TODO: API docs say string, but this looks to actually be a number
-forFactor: number // TODO: API docs say string, but this looks to actually be a number
+  exDate: string
+  declaredDate: string
+  recordDate: string
+  paymentDate: string
+  ratio: number
+  toFactor: number // TODO: API docs say string, but this looks to actually be a number
+  forFactor: number // TODO: API docs say string, but this looks to actually be a number
 }
 
 export interface LogoResponse {
@@ -311,8 +310,8 @@ export interface Dividend {
   amount: number
   flag: string // TODO: API docs don't mention this, but this can probably be an enum
   type: 'Dividend income' | 'Interest income' | 'Stock dividend' |
-        'Short term capital gain' | 'Medium term capital gain' |
-        'Long term capital gain' | 'Unspecified term capital gain'
+  'Short term capital gain' | 'Medium term capital gain' |
+  'Long term capital gain' | 'Unspecified term capital gain'
   qualified: 'P' | 'Q' | 'N' | '' | null // TODO: API Docs say null here, but we need to confirm if that ever happens
   indicated: string // TODO: API docs don't mention this, but this can probably be an enum
 }
