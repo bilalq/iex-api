@@ -25,6 +25,12 @@ export type StockEndpoint =
   | 'volume-by-venue'
   | string
 
+export enum PrimaryExchange {
+  OTC = 'US OTC',
+  NYSE = 'New York Stock Exchange',
+  NASDAQ = 'NASDAQ'
+}
+
 export interface QuoteResponse {
   symbol: string
   companyName: string
@@ -63,6 +69,7 @@ export interface QuoteResponse {
   week52High: number
   week52Low: number
   ytdChange: number
+  primaryExchange: PrimaryExchange
 }
 
 /**
