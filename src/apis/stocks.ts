@@ -129,7 +129,7 @@ export interface OpenCloseResponse {
  * et – Exchange Traded Fund (ETF)
  * (blank) = Not Available, i.e., Warrant, Note, or (non-filing) Closed Ended Funds
  */
-export type IssueType = 'ad' | 're' | 'ce' | 'si' | 'lp' | 'cs' | 'et' | ''
+export type IssueType = 'ad' | 're' | 'ce' | 'si' | 'lp' | 'cs' | 'et' | '' | 'ps'
 
 export interface CompanyResponse {
   symbol: string
