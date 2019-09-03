@@ -3,6 +3,7 @@ import * as ReferenceDataAPI from './apis/referenceData'
 import * as StocksAPI from './apis/stocks'
 
 const toQueryList = (values: string[]): string => values.map(encodeURIComponent).join(',')
+const toIEXSymbol = (symbol: string) => symbol.replace(/\//g, '.')
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
@@ -88,13 +89,24 @@ export default class IEXClient {
     symbols: string[],
     params?: {}
   ): Promise<any> {
+    const iexSymbols = symbols.map(toIEXSymbol)
     const paramSuffix = params ? toParams(params) : ''
 
     if (typeof types === 'string') {
-      return this.request(`/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(symbols)}&${paramSuffix}`)
+      return this.request(`/stock/market/${encodeURIComponent(types)}?symbols=${toQueryList(iexSymbols)}&${paramSuffix}`)
     }
 
-    return this.request(`/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(symbols)}&${paramSuffix}`)
+    return this.request(`/stock/market/batch?types=${toQueryList(types)}&symbols=${toQueryList(iexSymbols)}&${paramSuffix}`)
+      .then((response: { [key: string]: any }) => {
+        for (let key in response) {
+          if (/\./g.test(key)) {
+            response[key.replace(/\./g, '/')] = response[key]
+            delete response[key]
+          }
+        }
+
+        return response
+      })
   }
 
   /**
@@ -105,8 +117,9 @@ export default class IEXClient {
    * @param [displayPercent=false] If set to true, all percentage values will be multiplied by a factor of 100.
    */
   public stockQuote(stockSymbol: string, displayPercent?: boolean): Promise<StocksAPI.QuoteResponse> {
+    const iexSymbol = toIEXSymbol(stockSymbol)
     const queryString = displayPercent ? '?displayPercent=true' : ''
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/quote${queryString}`)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/quote${queryString}`)
   }
 
   /**
@@ -117,8 +130,9 @@ export default class IEXClient {
    * @param range The time range to load chart data for.
    */
   public stockChart(stockSymbol: string, params?: StocksAPI.ChartParams): Promise<StocksAPI.ChartResponse> {
+    const iexSymbol = toIEXSymbol(stockSymbol)
     const urlSuffix = params ? `?${toParams(params)}` : ''
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/chart${urlSuffix}`)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/chart${urlSuffix}`)
   }
 
   /**
@@ -128,7 +142,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockOpenClose(stockSymbol: string): Promise<StocksAPI.OpenCloseResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/open-close`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/open-close`)
   }
 
   /**
@@ -139,7 +154,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockPrevious(stockSymbol: string): Promise<StocksAPI.PreviousResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/previous`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/previous`)
   }
 
   /**
@@ -149,7 +165,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockCompany(stockSymbol: string): Promise<StocksAPI.CompanyResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/company`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/company`)
   }
 
   /**
@@ -159,7 +176,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockKeyStats(stockSymbol: string): Promise<StocksAPI.KeyStatsResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/stats`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/stats`)
   }
 
   /**
@@ -169,7 +187,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockPeers(stockSymbol: string): Promise<string[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/peers`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/peers`)
   }
 
   /**
@@ -182,7 +201,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockRelevant(stockSymbol: string): Promise<StocksAPI.RelevantResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/relevant`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/relevant`)
   }
 
   /**
@@ -194,10 +214,11 @@ export default class IEXClient {
    * @param [range=10] The number of news articles to pull. Defaults to 10 if omitted.
    */
   public stockNews(stockSymbol: string, range?: StocksAPI.NewsRange): Promise<StocksAPI.News[]> {
+    const iexSymbol = toIEXSymbol(stockSymbol)
     if (range) {
-      return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news?last=${range}`)
+      return this.request(`/stock/${encodeURIComponent(iexSymbol)}/news?last=${range}`)
     } else {
-      return this.request(`/stock/${encodeURIComponent(stockSymbol)}/news`)
+      return this.request(`/stock/${encodeURIComponent(iexSymbol)}/news`)
     }
   }
 
@@ -210,9 +231,10 @@ export default class IEXClient {
    * @param annual Whether to fetch annual financials, as opposed to quarterly financials
    */
   public stockFinancials(stockSymbol: string, last = 4, annual = false): Promise<StocksAPI.FinancialsResponse> {
+    const iexSymbol = toIEXSymbol(stockSymbol)
     const lastParam = `last=${last}`
     const period = annual ? 'period=annual' : ''
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/financials?${lastParam}&${period}`)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/financials?${lastParam}&${period}`)
   }
 
   /**
@@ -223,7 +245,8 @@ export default class IEXClient {
    * @param last The number of periods to fetch
    */
   public stockEarnings(stockSymbol: string, last = 4): Promise<StocksAPI.EarningsResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/earnings?last=${last}`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/earnings?last=${last}`)
   }
 
   /**
@@ -233,7 +256,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockEarningsEstimate(stockSymbol: string): Promise<StocksAPI.EarningsEstimateResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/estimates`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/estimates`)
   }
 
   /**
@@ -244,7 +268,8 @@ export default class IEXClient {
    * @param range The date range to get dividends from.
    */
   public stockDividends(stockSymbol: string, range: StocksAPI.DividendRange): Promise<StocksAPI.Dividend[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/dividends/${range}`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/dividends/${range}`)
   }
 
   /**
@@ -255,7 +280,8 @@ export default class IEXClient {
    * @param range The date range to get splits from.
    */
   public stockSplits(stockSymbol: string, range: StocksAPI.SplitRange): Promise<StocksAPI.Split[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/splits/${range}`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/splits/${range}`)
   }
 
   /**
@@ -265,7 +291,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockLogo(stockSymbol: string): Promise<StocksAPI.LogoResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/logo`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/logo`)
   }
 
   /**
@@ -277,7 +304,8 @@ export default class IEXClient {
    *  delayed market price, or the previous close price, is returned.
    */
   public stockPrice(stockSymbol: string): Promise<number> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/price`)
   }
 
   /**
@@ -287,7 +315,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockDelayedQuote(stockSymbol: string): Promise<number> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/price`)
   }
 
   /**
@@ -298,15 +327,18 @@ export default class IEXClient {
    */
 
   public stockRecommendationTrends(stockSymbol: string): Promise<StocksAPI.RecommendationTrendsResponse[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/recommendation-trends`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/recommendation-trends`)
   }
 
   public stockRelated(stockSymbol: string): Promise<string[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/related`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/related`)
   }
 
   public stockClassification(stockSymbol: string): Promise<StocksAPI.Classification> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/classification`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/classification`)
   }
 
   /**
@@ -343,7 +375,8 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockEffectiveSpread(stockSymbol: string): Promise<StocksAPI.EffectiveSpread[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/effective-spread`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/effective-spread`)
   }
 
   /**
@@ -355,21 +388,24 @@ export default class IEXClient {
    * @param stockSymbol The symbol of the stock to fetch data for.
    */
   public stockVolumeByVenue(stockSymbol: string): Promise<StocksAPI.VolumeByVenue[]> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/volume-by-venue`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/volume-by-venue`)
   }
 
   /**
    * Retrieves latest TOPS data for specified symbol
    */
   public tops(stockSymbol: string): Promise<MarketDataAPI.TopsResponse[]> {
-    return this.request(`tops?symbols=${encodeURIComponent(stockSymbol)}`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`tops?symbols=${encodeURIComponent(iexSymbol)}`)
   }
 
   /**
    * Retrieves latest DEEP data for specified symbol
    */
   public deep(stockSymbol: string): Promise<MarketDataAPI.DeepResponse> {
-    return this.request(`deep?symbols=${encodeURIComponent(stockSymbol)}`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`deep?symbols=${encodeURIComponent(iexSymbol)}`)
   }
 
   /**
@@ -398,6 +434,7 @@ export default class IEXClient {
    * Retrieves price target data for the stock symbol
    */
   public priceTarget(stockSymbol: string): Promise<MarketDataAPI.PriceTargetResponse> {
-    return this.request(`/stock/${encodeURIComponent(stockSymbol)}/price-target`)
+    const iexSymbol = toIEXSymbol(stockSymbol)
+    return this.request(`/stock/${encodeURIComponent(iexSymbol)}/price-target`)
   }
 }
