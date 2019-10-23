@@ -423,7 +423,7 @@ export default class IEXClient {
   /**
    * Retrieves upcoming earnings
    */
-  public upcomingEarnings(): Promise<MarketDataAPI.MarketEarningsResponse> {
+  public upcomingEarnings(): Promise<MarketDataAPI.MarketUpcomingEarningsResponse[]> {
     return this.request('/stock/market/upcoming-earnings')
   }
 
