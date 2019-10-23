@@ -244,6 +244,11 @@ export interface MarketEarningsResponse {
     amc: Earnings[]
 }
 
+export interface MarketUpcomingEarningsResponse {
+    symbol: string
+    reportDate: string
+}
+
 export interface SectorPerformanceResponse {
     type: string
     name: string
