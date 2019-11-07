@@ -250,7 +250,7 @@ export interface MarketUpcomingEarningsResponse {
 }
 
 export interface MarketUpcomingEarningsCacheResponse extends MarketUpcomingEarningsResponse {
-    marketcap: number
+    marketCap: number
 }
 
 export interface SectorPerformanceResponse {
