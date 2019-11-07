@@ -1,7 +1,7 @@
 export enum EVENT_TYPE {
-    upcomingEvents = 'upcoming-events',
-    upcomingEarnings = 'upcoming-earnings',
-    upcomingDividends = 'upcoming-dividends',
-    upcomingSplits = 'upcoming-splits',
-    upcomingIpos = 'upcoming-ipos'
+    UPCOMING_EVENTS = 'upcoming-events',
+    UPCOMING_EARNINGS = 'upcoming-earnings',
+    UPCOMING_DIVIDENDS = 'upcoming-dividends',
+    UPCOMING_SPLITS = 'upcoming-splits',
+    UPCOMING_IPOS = 'upcoming-ipos'
 }

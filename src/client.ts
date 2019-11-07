@@ -435,7 +435,7 @@ export default class IEXClient {
     }
   ): Promise<MarketDataAPI.MarketUpcomingEarningsCacheResponse[]> {
     const paramSuffix = params ? toParams(params) : ''
-    return this.request(`/stock/market/upcoming-events?type=${EVENT_TYPE.upcomingEarnings}&${paramSuffix}`)
+    return this.request(`/stock/market/upcoming-events?type=${EVENT_TYPE.UPCOMING_EARNINGS}&${paramSuffix}`)
   }
 
   /**
