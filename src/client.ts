@@ -421,10 +421,20 @@ export default class IEXClient {
   }
 
   /**
-   * Retrieves upcoming earnings
+   * Retrieves upcoming earnings. Dates in YYYY-MM-DD format.
    */
-  public upcomingEarnings(): Promise<MarketDataAPI.MarketUpcomingEarningsResponse[]> {
-    return this.request('/stock/market/upcoming-earnings')
+  public upcomingEarnings(
+    params: {
+      date?: string,
+      year?: number,
+      month?: number,
+      week?: number,
+      startDate?: string,
+      endDate?: string
+    }
+  ): Promise<MarketDataAPI.MarketUpcomingEarningsCacheResponse[]> {
+    const paramSuffix = params ? toParams(params) : ''
+    return this.request(`/stock/market/upcoming-events?type=upcoming-earnings&${paramSuffix}`)
   }
 
   /**
