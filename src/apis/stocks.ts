@@ -25,6 +25,9 @@ export type StockEndpoint =
   | 'volume-by-venue'
   | string
 
+/**
+ * IEX Primary Exchanges
+ */
 export enum PrimaryExchange {
   OTC = 'US OTC',
   NYSE = 'New York Stock Exchange',
@@ -138,6 +141,9 @@ export interface OpenCloseResponse {
  */
 export type IssueType = 'ad' | 're' | 'ce' | 'si' | 'lp' | 'cs' | 'et' | '' | 'ps'
 
+/**
+ * IEX Languages
+ */
 export enum Language {
   EN = 'en',
   PT = 'pt',

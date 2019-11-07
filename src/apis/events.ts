@@ -1,3 +1,6 @@
+/**
+ * Upcoming Event Types
+ */
 export enum EVENT_TYPE {
     UPCOMING_EVENTS = 'upcoming-events',
     UPCOMING_EARNINGS = 'upcoming-earnings',
