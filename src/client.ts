@@ -11,7 +11,7 @@ export const toIexSymbol = (symbol: string) => symbol.indexOf('/') > 1
 
 export const fromIexSymbol = (symbol: string) => symbol.replace(/\./g, '/')
 
-const formatDate = (date: Date) => `${date.getFullYear}-${date.getMonth}-${date.getDate}`
+const formatDate = (date: Date | undefined) => !!date ? `${date.getFullYear}-${date.getMonth}-${date.getDate}` : undefined
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
@@ -437,9 +437,9 @@ export default class IEXClient {
     }
   ): Promise<MarketDataAPI.MarketUpcomingEarningsCacheResponse[]> {
     const formattedParams = {
-      date: !!params.date ? formatDate(params.date) : undefined,
-      startDate: !!params.startDate ? formatDate(params.startDate) : undefined,
-      endDate: !!params.endDate ? formatDate(params.endDate) : undefined,
+      date: formatDate(params.date),
+      startDate: formatDate(params.startDate),
+      endDate: formatDate(params.endDate),
       year: params.year,
       month: params.month,
       week: params.week
