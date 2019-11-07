@@ -16,7 +16,7 @@ const formatDate = (date: Date | undefined) => date !== undefined ? `${date.getF
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
   Object.keys(params)
-    .filter(param => param !== undefined)
+    .filter((param: string | undefined) => param !== undefined)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     .join('&')
 // tslint:enable:no-unsafe-any
