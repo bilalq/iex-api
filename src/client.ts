@@ -450,8 +450,8 @@ export default class IEXClient {
       month: params.month,
       week: params.week
     }
-    const paramSuffix = params ? toParams(formattedParams) : ''
-    return this.request(`/stock/market/upcoming-events?type=${EVENT_TYPE.UPCOMING_EARNINGS}&${paramSuffix}`)
+    const paramSuffix = `&${toParams(formattedParams)}`
+    return this.request(`/stock/market/upcoming-events?type=${EVENT_TYPE.UPCOMING_EARNINGS}${paramSuffix}`)
   }
 
   /**
