@@ -249,6 +249,10 @@ export interface MarketUpcomingEarningsResponse {
     reportDate: string
 }
 
+export interface MarketUpcomingEarningsCacheResponse extends MarketUpcomingEarningsResponse {
+    marketCap: number
+}
+
 export interface SectorPerformanceResponse {
     type: string
     name: string

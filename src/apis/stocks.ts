@@ -138,6 +138,19 @@ export interface OpenCloseResponse {
  */
 export type IssueType = 'ad' | 're' | 'ce' | 'si' | 'lp' | 'cs' | 'et' | '' | 'ps'
 
+export enum Language {
+  EN = 'en',
+  PT = 'pt',
+  FR = 'fr',
+  DE = 'de'
+}
+
+export type IexLanguage =
+  | Language.EN
+  | Language.PT
+  | Language.FR
+  | Language.DE
+
 export interface CompanyResponse {
   symbol: string
   companyName: string
@@ -193,7 +206,7 @@ export interface News {
   summary: string
   related: string
   image: string
-  lang: string
+  lang: IexLanguage
   hasPaywall: boolean
 }
 

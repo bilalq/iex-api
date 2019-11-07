@@ -1,3 +1,4 @@
+import { EVENT_TYPE } from './apis/events'
 import * as MarketDataAPI from './apis/marketData'
 import * as ReferenceDataAPI from './apis/referenceData'
 import * as StocksAPI from './apis/stocks'
@@ -9,6 +10,8 @@ export const toIexSymbol = (symbol: string) => symbol.indexOf('/') > 1
   : symbol
 
 export const fromIexSymbol = (symbol: string) => symbol.replace(/\./g, '/')
+
+const formatDate = (date: Date | undefined) => !!date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : undefined
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
@@ -421,10 +424,28 @@ export default class IEXClient {
   }
 
   /**
-   * Retrieves upcoming earnings
+   * Retrieves upcoming earnings.
    */
-  public upcomingEarnings(): Promise<MarketDataAPI.MarketUpcomingEarningsResponse[]> {
-    return this.request('/stock/market/upcoming-earnings')
+  public upcomingEarnings(
+    params: {
+      date?: Date,
+      year?: number,
+      month?: number,
+      week?: number,
+      startDate?: Date,
+      endDate?: Date
+    }
+  ): Promise<MarketDataAPI.MarketUpcomingEarningsCacheResponse[]> {
+    const formattedParams = {
+      date: formatDate(params.date),
+      startDate: formatDate(params.startDate),
+      endDate: formatDate(params.endDate),
+      year: params.year,
+      month: params.month,
+      week: params.week
+    }
+    const paramSuffix = params ? toParams(formattedParams) : ''
+    return this.request(`/stock/market/upcoming-events?type=${EVENT_TYPE.UPCOMING_EARNINGS}&${paramSuffix}`)
   }
 
   /**
