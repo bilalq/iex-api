@@ -11,7 +11,7 @@ export const toIexSymbol = (symbol: string) => symbol.indexOf('/') > 1
 
 export const fromIexSymbol = (symbol: string) => symbol.replace(/\./g, '/')
 
-const formatDate = (date: Date | undefined) => !!date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : undefined
+const formatDate = (date: Date | undefined) => date !== undefined ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : undefined
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
@@ -339,11 +339,17 @@ export default class IEXClient {
     return this.request(`/stock/${encodeURIComponent(iexSymbol)}/recommendation-trends`)
   }
 
+  /**
+   * Return list of related stocks
+   */
   public stockRelated(stockSymbol: string): Promise<string[]> {
     const iexSymbol = toIexSymbol(stockSymbol)
     return this.request(`/stock/${encodeURIComponent(iexSymbol)}/related`)
   }
 
+  /**
+   * Return classification of stock
+   */
   public stockClassification(stockSymbol: string): Promise<StocksAPI.Classification> {
     const iexSymbol = toIexSymbol(stockSymbol)
     return this.request(`/stock/${encodeURIComponent(iexSymbol)}/classification`)
