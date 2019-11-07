@@ -11,7 +11,7 @@ export const toIexSymbol = (symbol: string) => symbol.indexOf('/') > 1
 
 export const fromIexSymbol = (symbol: string) => symbol.replace(/\./g, '/')
 
-const formatDate = (date: Date | undefined) => !!date ? `${date.getFullYear}-${date.getMonth}-${date.getDate}` : undefined
+const formatDate = (date: Date | undefined) => !!date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : undefined
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
