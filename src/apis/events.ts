@@ -1,7 +1,7 @@
-export type EventType =
-    | 'upcoming-events'
-    | 'upcoming-earnings'
-    | 'upcoming-dividends'
-    | 'upcoming-splits'
-    | 'upcoming-ipos'
-    | string
+export enum EVENT_TYPE {
+    upcomingEvents = 'upcoming-events',
+    upcomingEarnings = 'upcoming-earnings',
+    upcomingDividends = 'upcoming-dividends',
+    upcomingSplits = 'upcoming-splits',
+    upcomingIpos = 'upcoming-ipos'
+}

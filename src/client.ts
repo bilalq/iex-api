@@ -1,3 +1,4 @@
+import { EVENT_TYPE } from './apis/events'
 import * as MarketDataAPI from './apis/marketData'
 import * as ReferenceDataAPI from './apis/referenceData'
 import * as StocksAPI from './apis/stocks'
@@ -434,7 +435,7 @@ export default class IEXClient {
     }
   ): Promise<MarketDataAPI.MarketUpcomingEarningsCacheResponse[]> {
     const paramSuffix = params ? toParams(params) : ''
-    return this.request(`/stock/market/upcoming-events?type=upcoming-earnings&${paramSuffix}`)
+    return this.request(`/stock/market/upcoming-events?type=${EVENT_TYPE.upcomingEarnings}&${paramSuffix}`)
   }
 
   /**
