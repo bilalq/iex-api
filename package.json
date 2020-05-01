@@ -1,6 +1,6 @@
 {
   "name": "iex-api",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Unofficial SDK for using the IEX API.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -34,8 +34,12 @@
     "url": "https://github.com/bilalq/iex-api/issues"
   },
   "homepage": "https://github.com/bilalq/iex-api#readme",
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.25.0",
+    "moment-timezone": "^0.5.28"
+  },
   "devDependencies": {
+    "@types/moment-timezone": "^0.5.13",
     "@types/jest": "^21.1.8",
     "@types/npm": "^2.0.29",
     "fetch-ponyfill": "^4.1.0",
