@@ -1,3 +1,4 @@
+import moment from 'moment-timezone'
 import { EVENT_TYPE } from './apis/events'
 import * as MarketDataAPI from './apis/marketData'
 import * as ReferenceDataAPI from './apis/referenceData'
@@ -11,7 +12,13 @@ export const toIexSymbol = (symbol: string) => symbol.indexOf('/') > 1
 
 export const fromIexSymbol = (symbol: string) => symbol.replace(/\./g, '/')
 
-const formatDate = (date: Date | undefined) => date !== undefined ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : undefined
+const formatDate = (date: Date | undefined) => {
+  if (date === undefined) {
+    return date
+  }
+  // tslint:disable:no-unsafe-any
+  return moment.tz(date, 'America/New_York').format('YYYY-MM-DD') as string
+}
 
 // tslint:disable:no-unsafe-any
 const toParams = (params: any): string =>
